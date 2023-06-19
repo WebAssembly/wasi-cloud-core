@@ -1,112 +1,39 @@
-# [Example WASI proposal]
-
-This template can be used to start a new proposal, which can then be proposed in the WASI Subgroup meetings.
-
-The sections below are recommended. However, every proposal is different, and the community can help you flesh out the proposal, so don't block on having something filled in for each one of them.
-
-Thank you to the W3C Privacy CG for the [inspiration](https://github.com/privacycg/template)!
-
-# [Title]
+# `wasi-cloud-core`
 
 A proposed [WebAssembly System Interface](https://github.com/WebAssembly/WASI) API.
 
 ### Current Phase
 
-[Fill in the current phase, e.g. Phase 1]
+`wasi-cloud-core` is currently in [Phase 1](https://github.com/WebAssembly/WASI/blob/main/Proposals.md#phase-1---feature-proposal-cg).
 
 ### Champions
 
-- [Champion 1]
-- [Champion 2]
-- [etc.]
+- [Dan Chiarlone](https://github.com/danbugs)
+- [David Justice](https://github.com/devigned)
+- [Jiaxiao Zhou](https://github.com/Mossaka)
 
 ### Phase 4 Advancement Criteria
 
-TODO before entering Phase 2.
+`wasi-cloud-core` should have at least two implementations (i.e., from service providers, and or cloud providers), and, at the very minimum, pass the testsuite for Windows, Linux, and MacOS.
 
 ## Table of Contents [if the explainer is longer than one printed page]
 
 - [Introduction](#introduction)
-- [Goals [or Motivating Use Cases, or Scenarios]](#goals-or-motivating-use-cases-or-scenarios)
-- [Non-goals](#non-goals)
-- [API walk-through](#api-walk-through)
-  - [Use case 1](#use-case-1)
-  - [Use case 2](#use-case-2)
-- [Detailed design discussion](#detailed-design-discussion)
-  - [[Tricky design choice 1]](#tricky-design-choice-1)
-  - [[Tricky design choice 2]](#tricky-design-choice-2)
-- [Considered alternatives](#considered-alternatives)
-  - [[Alternative 1]](#alternative-1)
-  - [[Alternative 2]](#alternative-2)
-- [Stakeholder Interest & Feedback](#stakeholder-interest--feedback)
-- [References & acknowledgements](#references--acknowledgements)
 
 ### Introduction
 
-[The "executive summary" or "abstract". Explain in a few sentences what the goals of the project are, and a brief overview of how the solution works. This should be no more than 1-2 paragraphs.]
+> Note: This proposal currently only contains the proposed WIT interfaces; more work is necessary to fully document the proposal.
 
-### Goals [or Motivating Use Cases, or Scenarios]
+`wasi-cloud-core` World aims to provide a generic way for WASI applications to interact with services. This world is created by including many other WASI worlds being proposed in the WASI community. The following is a list of the worlds that are currently being included in `wasi-cloud-core`.
 
-[What is the end-user need which this project aims to address?]
+- [wasi-keyvalue](https://github.com/WebAssembly/wasi-keyvalue)
+- [wasi-messaging](https://github.com/WebAssembly/wasi-messaging)
+- [wasi-http](https://github.com/WebAssembly/wasi-http)
+- [wasi-runtime-config](https://github.com/WebAssembly/wasi-runtime-config)
+- [wasi-distributed-lock-service](https://github.com/WebAssembly/wasi-distributed-lock-service)
+- [wasi-sql](https://github.com/WebAssembly/wasi-sql)
+- [wasi-blob-store](https://github.com/WebAssembly/wasi-blob-store)
 
-### Non-goals
+This list of services provide a set of capabilities that are common to many applications. Examples: handling an HTTP request, responding to a pub/sub message, storing a key/value pair, etc. It targets a wide range of applications, from long-running services to "bursty workloads" like Edge functions, serverless functions or Cloud events.
 
-[If there are "adjacent" goals which may appear to be in scope but aren't, enumerate them here. This section may be fleshed out as your design progresses and you encounter necessary technical and other trade-offs.]
-
-### API walk-through
-
-The full API documentation can be found [here](wasi-proposal-template.md).
-
-[Walk through of how someone would use this API.]
-
-#### [Use case 1]
-
-[Provide example code snippets and diagrams explaining how the API would be used to solve the given problem]
-
-#### [Use case 2]
-
-[etc.]
-
-### Detailed design discussion
-
-[This section should mostly refer to the .wit.md file that specifies the API. This section is for any discussion of the choices made in the API which don't make sense to document in the spec file itself.]
-
-#### [Tricky design choice #1]
-
-[Talk through the tradeoffs in coming to the specific design point you want to make.]
-
-```
-// Illustrated with example code.
-```
-
-[This may be an open question, in which case you should link to any active discussion threads.]
-
-#### [Tricky design choice 2]
-
-[etc.]
-
-### Considered alternatives
-
-[This section is not required if you already covered considered alternatives in the design discussion above.]
-
-#### [Alternative 1]
-
-[Describe an alternative which was considered, and why you decided against it.]
-
-#### [Alternative 2]
-
-[etc.]
-
-### Stakeholder Interest & Feedback
-
-TODO before entering Phase 3.
-
-[This should include a list of implementers who have expressed interest in implementing the proposal]
-
-### References & acknowledgements
-
-Many thanks for valuable feedback and advice from:
-
-- [Person 1]
-- [Person 2]
-- [etc.]
+This set of capabilities are derived from the best practices of building distributed applications. It is not intended to be a complete set of capabilities, but rather are needed by 80% of applications.
