@@ -1,11 +1,11 @@
-package wasi:cloud-core
+package wasi:cloud-core;
 
 world cloud-core {
-    include wasi:keyvalue
-    include wasi:blob-store
-    include wasi:messaging
-    include wasi:sql
-    include wasi:runtime-config
-    include wasi:distributed-locking
-    include wasi:http
+    include wasi:keyvalue;
+    include wasi:blob-store;
+    include wasi:messaging;
+    include wasi:sql;
+    include wasi:runtime-config;
+    include wasi:distributed-locking;
+    include wasi:http;
 }
