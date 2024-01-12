@@ -1,3 +1,5 @@
-default world blob-store {
-	import blobstore: pkg.blobstore
+package wasi:blobstore;
+
+world imports {
+	import blobstore;
 }

@@ -1,11 +1,53 @@
-package wasi:cloud-core;
+package wasi:cloud-core@0.1.0;
 
-world cloud-core {
-    include wasi:keyvalue;
-    include wasi:blob-store;
-    include wasi:messaging;
-    include wasi:sql;
-    include wasi:runtime-config;
-    include wasi:distributed-locking;
-    include wasi:http;
+/// The `http` world is a world that exports a single HTTP
+/// handler that can be used to handle HTTP requests, and 
+/// a set of capabilities that can be used to interact with
+/// the platform / runtime.
+world http {
+    /// The capability to interact with key-value stores
+    include wasi:keyvalue/imports;
+
+    /// The capability to interact with blob stores
+    include wasi:blobstore/imports;
+
+    /// The capability to send messages to message broker proiders
+    import wasi:messaging/producer;
+
+    /// The capability to receive messages from message broker providers
+	import wasi:messaging/consumer;
+
+    /// The capability to interact with SQL databases
+    include wasi:sql/imports;
+
+    /// The capability to interact with runtime configuration providers
+    include wasi:runtime-config/imports@0.1.0;
+
+    /// The capability to send/receive HTTP requests
+    include wasi:http/proxy@0.2.0-rc-2023-12-05;
+}
+
+/// The `messaging` world is a world that exports a single
+/// asyncrhonous messaging handler that can be used to
+/// handle incoming messages from some message broker provider, 
+/// and a set of capabilities that can be used to interact with
+/// the platform / runtime.
+world messaging {
+    /// The capability to interact with key-value stores
+    include wasi:keyvalue/imports;
+
+    /// The capability to interact with blob stores
+    include wasi:blobstore/imports;
+
+    /// The capability to send and receive messages from message broker providers
+    include wasi:messaging/messaging;
+
+    /// The capability to interact with SQL databases
+    include wasi:sql/imports;
+
+    /// The capability to interact with runtime configuration providers
+    include wasi:runtime-config/imports@0.1.0;
+
+    /// The capability to send HTTP requests (e.g. via `fetch()`)
+    import wasi:http/outgoing-handler@0.2.0-rc-2023-12-05;
 }

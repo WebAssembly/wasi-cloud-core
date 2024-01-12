@@ -1,4 +1,4 @@
-default interface types {
+interface types {
     // one single row item
     record row {
         field-name: string,
@@ -24,20 +24,20 @@ default interface types {
 
     // allows parameterized queries
     // e.g., prepare-statement("SELECT * FROM users WHERE name = ? AND age = ?", vec!["John Doe", "32"])
-    type statement = u32
-    drop-statement: func(s: statement)
-    prepare-statement: func(query: string, params: list<string>) -> result<statement, error>
+    type statement = u32;
+    drop-statement: func(s: statement);
+    prepare-statement: func(query: string, params: list<string>) -> result<statement, error>;
 
     /// An error resource type.
     /// Currently, this provides only one function to return a string representation
     /// of the error. In the future, this will be extended to provide more information.
     // TODO: switch to `resource error { ... }`
-    type error = u32
-    drop-error: func(e: error)
-    trace-error: func(e: error) -> string 
+    type error = u32;
+    drop-error: func(e: error);
+    trace-error: func(e: error) -> string;
 
     /// A connection to a sql store.
-    type connection = u32
-    drop-connection: func(b: connection)
-    open-connection: func(name: string) -> result<connection, error>   
+    type connection = u32;
+    drop-connection: func(b: connection);
+    open-connection: func(name: string) -> result<connection, error>;
 }

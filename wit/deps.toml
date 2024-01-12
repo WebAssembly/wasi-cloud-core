@@ -4,8 +4,6 @@ http = "https://github.com/WebAssembly/wasi-http/archive/main.tar.gz"
 messaging = "https://github.com/WebAssembly/wasi-messaging/archive/main.tar.gz"
 sql = "https://github.com/WebAssembly/wasi-sql/archive/main.tar.gz"
 runtime-config = "https://github.com/WebAssembly/wasi-runtime-config/archive/main.tar.gz"
-distributed-locking = "https://github.com/WebAssembly/wasi-distributed-lock-service/archive/main.tar.gz"
 
 # transitive dependencies
 io = "https://github.com/WebAssembly/wasi-io/archive/main.tar.gz"
-poll = "https://github.com/WebAssembly/wasi-poll/archive/main.tar.gz"
