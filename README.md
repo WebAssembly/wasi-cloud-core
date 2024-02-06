@@ -11,6 +11,7 @@ A proposed [WebAssembly System Interface](https://github.com/WebAssembly/WASI) A
 - [Dan Chiarlone](https://github.com/danbugs)
 - [David Justice](https://github.com/devigned)
 - [Jiaxiao Zhou](https://github.com/Mossaka)
+- [Taylor Thomas](https://github.com/thomastaylor312)
 
 ### Phase 4 Advancement Criteria
 
