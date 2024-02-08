@@ -7,7 +7,7 @@ interface runtime {
         upstream(string),
         /// I/O or connection failure when fetching data
         io(string),
-    };
+    }
 
     /// Gets a single opaque config value set at the given key if it exists
     get: func(key: string) -> result<option<list<u8>>, config-error>;
