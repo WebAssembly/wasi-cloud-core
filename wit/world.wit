@@ -48,3 +48,13 @@ world messaging-service {
     /// The capability to send and receive messages from message broker providers
     include wasi:messaging/messaging@0.1.0;
 }
+
+
+/// The `service` world that exports all the services. 
+/// TODO: The host is expected to treat all exports as 
+/// **optional** until the `option` semantics was
+/// added to the component model and WIT specification.
+world service {
+    include http-service;
+    include messaging-service;
+}
