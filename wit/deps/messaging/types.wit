@@ -1,13 +1,13 @@
 interface messaging-types {
     /// A connection to a message-exchange service (e.g., buffer, broker, etc.).
-    type client = u32;
-    disconnect: func(c: client);
-    connect: func(name: string) -> result<client, error>;
-  
+    resource client {
+        connect: static func(name: string) -> result<client, error>;
+    }
+    
     /// TODO(danbugs): This should be eventually extracted as an underlying type for other wasi-cloud-core interfaces.
-    type error = u32;
-    drop-error: func(e: error);
-    trace: func(e: error) -> string;
+    resource error {
+        trace: static func() -> string;    
+    }
   
     /// There are two types of channels:
     /// - publish-subscribe channel, which is a broadcast channel, and

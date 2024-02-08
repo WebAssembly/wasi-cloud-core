@@ -1,4 +1,4 @@
-package wasi:messaging;
+package wasi:messaging@0.1.0;
 
 world messaging {
 	import producer;
