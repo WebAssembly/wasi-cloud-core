@@ -23,7 +23,7 @@ world imports {
     import wasi:config/runtime@0.1.0;
 
     /// The capability to send HTTP requests (e.g. via `fetch()`)
-    import wasi:http/outgoing-handler@0.2.0;
+    include wasi:http/imports@0.2.0;
 }
 
 /// The `http-service` world is a world that exports a single HTTP
