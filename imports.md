@@ -9,12 +9,9 @@ export interfaces.</p>
 <li>interface <a href="#wasi:messaging_producer_0.1.0"><code>wasi:messaging/producer@0.1.0</code></a></li>
 <li>interface <a href="#wasi:messaging_consumer_0.1.0"><code>wasi:messaging/consumer@0.1.0</code></a></li>
 <li>interface <a href="#wasi:config_runtime_0.1.0"><code>wasi:config/runtime@0.1.0</code></a></li>
-<li>interface <a href="#wasi:io_poll_0.2.0"><code>wasi:io/poll@0.2.0</code></a></li>
-<li>interface <a href="#wasi:clocks_monotonic_clock_0.2.0"><code>wasi:clocks/monotonic-clock@0.2.0</code></a></li>
 <li>interface <a href="#wasi:io_error_0.2.0"><code>wasi:io/error@0.2.0</code></a></li>
+<li>interface <a href="#wasi:io_poll_0.2.0"><code>wasi:io/poll@0.2.0</code></a></li>
 <li>interface <a href="#wasi:io_streams_0.2.0"><code>wasi:io/streams@0.2.0</code></a></li>
-<li>interface <a href="#wasi:http_types_0.2.0"><code>wasi:http/types@0.2.0</code></a></li>
-<li>interface <a href="#wasi:http_outgoing_handler_0.2.0"><code>wasi:http/outgoing-handler@0.2.0</code></a></li>
 <li>interface <a href="#wasi:keyvalue_wasi_keyvalue_error_0.1.0"><code>wasi:keyvalue/wasi-keyvalue-error@0.1.0</code></a></li>
 <li>interface <a href="#wasi:keyvalue_types_0.1.0"><code>wasi:keyvalue/types@0.1.0</code></a></li>
 <li>interface <a href="#wasi:keyvalue_eventual_0.1.0"><code>wasi:keyvalue/eventual@0.1.0</code></a></li>
@@ -25,6 +22,14 @@ export interfaces.</p>
 <li>interface <a href="#wasi:blobstore_blobstore_0.1.0"><code>wasi:blobstore/blobstore@0.1.0</code></a></li>
 <li>interface <a href="#wasi:sql_types_0.1.0"><code>wasi:sql/types@0.1.0</code></a></li>
 <li>interface <a href="#wasi:sql_readwrite_0.1.0"><code>wasi:sql/readwrite@0.1.0</code></a></li>
+<li>interface <a href="#wasi:random_random_0.2.0"><code>wasi:random/random@0.2.0</code></a></li>
+<li>interface <a href="#wasi:cli_stdout_0.2.0"><code>wasi:cli/stdout@0.2.0</code></a></li>
+<li>interface <a href="#wasi:cli_stderr_0.2.0"><code>wasi:cli/stderr@0.2.0</code></a></li>
+<li>interface <a href="#wasi:cli_stdin_0.2.0"><code>wasi:cli/stdin@0.2.0</code></a></li>
+<li>interface <a href="#wasi:clocks_monotonic_clock_0.2.0"><code>wasi:clocks/monotonic-clock@0.2.0</code></a></li>
+<li>interface <a href="#wasi:http_types_0.2.0"><code>wasi:http/types@0.2.0</code></a></li>
+<li>interface <a href="#wasi:http_outgoing_handler_0.2.0"><code>wasi:http/outgoing-handler@0.2.0</code></a></li>
+<li>interface <a href="#wasi:clocks_wall_clock_0.2.0"><code>wasi:clocks/wall-clock@0.2.0</code></a></li>
 </ul>
 </li>
 </ul>
@@ -236,6 +241,41 @@ export interfaces.</p>
 <ul>
 <li><a name="get_all.0"></a> result&lt;list&lt;(<code>string</code>, list&lt;<code>u8</code>&gt;)&gt;, <a href="#config_error"><a href="#config_error"><code>config-error</code></a></a>&gt;</li>
 </ul>
+<h2><a name="wasi:io_error_0.2.0"></a>Import interface wasi:io/error@0.2.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="error"></a><code>resource error</code></h4>
+<p>A resource which represents some error information.</p>
+<p>The only method provided by this resource is <code>to-debug-string</code>,
+which provides some human-readable information about the error.</p>
+<p>In the <code>wasi:io</code> package, this resource is returned through the
+<code>wasi:io/streams/stream-error</code> type.</p>
+<p>To provide more specific error information, other interfaces may
+provide functions to further &quot;downcast&quot; this error into more specific
+error information. For example, <a href="#error"><code>error</code></a>s returned in streams derived
+from filesystem types to be described using the filesystem's own
+error-code type, using the function
+<code>wasi:filesystem/types/filesystem-error-code</code>, which takes a parameter
+<code>borrow&lt;error&gt;</code> and returns
+<code>option&lt;wasi:filesystem/types/error-code&gt;</code>.</p>
+<h2>The set of functions which can &quot;downcast&quot; an <a href="#error"><code>error</code></a> into a more
+concrete type is open.</h2>
+<h3>Functions</h3>
+<h4><a name="method_error.to_debug_string"></a><code>[method]error.to-debug-string: func</code></h4>
+<p>Returns a string that is suitable to assist humans in debugging
+this error.</p>
+<p>WARNING: The returned string should not be consumed mechanically!
+It may change across platforms, hosts, or other implementation
+details. Parsing this string is a major platform-compatibility
+hazard.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_error.to_debug_string.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_error.to_debug_string.0"></a> <code>string</code></li>
+</ul>
 <h2><a name="wasi:io_poll_0.2.0"></a>Import interface wasi:io/poll@0.2.0</h2>
 <p>A poll API intended to let users wait for I/O events on multiple handles
 at once.</p>
@@ -285,102 +325,6 @@ being reaedy for I/O.</p>
 <h5>Return values</h5>
 <ul>
 <li><a name="poll.0"></a> list&lt;<code>u32</code>&gt;</li>
-</ul>
-<h2><a name="wasi:clocks_monotonic_clock_0.2.0"></a>Import interface wasi:clocks/monotonic-clock@0.2.0</h2>
-<p>WASI Monotonic Clock is a clock API intended to let users measure elapsed
-time.</p>
-<p>It is intended to be portable at least between Unix-family platforms and
-Windows.</p>
-<p>A monotonic clock is a clock which has an unspecified initial value, and
-successive reads of the clock will produce non-decreasing values.</p>
-<p>It is intended for measuring elapsed time.</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="pollable"></a><code>type pollable</code></h4>
-<p><a href="#pollable"><a href="#pollable"><code>pollable</code></a></a></p>
-<p>
-#### <a name="instant"></a>`type instant`
-`u64`
-<p>An instant in time, in nanoseconds. An instant is relative to an
-unspecified initial value, and can only be compared to instances from
-the same monotonic-clock.
-<h4><a name="duration"></a><code>type duration</code></h4>
-<p><code>u64</code></p>
-<p>A duration of time, in nanoseconds.
-<hr />
-<h3>Functions</h3>
-<h4><a name="now"></a><code>now: func</code></h4>
-<p>Read the current value of the clock.</p>
-<p>The clock is monotonic, therefore calling this function repeatedly will
-produce a sequence of non-decreasing values.</p>
-<h5>Return values</h5>
-<ul>
-<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
-</ul>
-<h4><a name="resolution"></a><code>resolution: func</code></h4>
-<p>Query the resolution of the clock. Returns the duration of time
-corresponding to a clock tick.</p>
-<h5>Return values</h5>
-<ul>
-<li><a name="resolution.0"></a> <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
-</ul>
-<h4><a name="subscribe_instant"></a><code>subscribe-instant: func</code></h4>
-<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified instant
-occured.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="subscribe_instant.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="subscribe_instant.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
-</ul>
-<h4><a name="subscribe_duration"></a><code>subscribe-duration: func</code></h4>
-<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the given duration has
-elapsed, starting at the time at which this function was called.
-occured.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="subscribe_duration.when"></a><code>when</code>: <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="subscribe_duration.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
-</ul>
-<h2><a name="wasi:io_error_0.2.0"></a>Import interface wasi:io/error@0.2.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="error"></a><code>resource error</code></h4>
-<p>A resource which represents some error information.</p>
-<p>The only method provided by this resource is <code>to-debug-string</code>,
-which provides some human-readable information about the error.</p>
-<p>In the <code>wasi:io</code> package, this resource is returned through the
-<code>wasi:io/streams/stream-error</code> type.</p>
-<p>To provide more specific error information, other interfaces may
-provide functions to further &quot;downcast&quot; this error into more specific
-error information. For example, <a href="#error"><code>error</code></a>s returned in streams derived
-from filesystem types to be described using the filesystem's own
-error-code type, using the function
-<code>wasi:filesystem/types/filesystem-error-code</code>, which takes a parameter
-<code>borrow&lt;error&gt;</code> and returns
-<code>option&lt;wasi:filesystem/types/error-code&gt;</code>.</p>
-<h2>The set of functions which can &quot;downcast&quot; an <a href="#error"><code>error</code></a> into a more
-concrete type is open.</h2>
-<h3>Functions</h3>
-<h4><a name="method_error.to_debug_string"></a><code>[method]error.to-debug-string: func</code></h4>
-<p>Returns a string that is suitable to assist humans in debugging
-this error.</p>
-<p>WARNING: The returned string should not be consumed mechanically!
-It may change across platforms, hosts, or other implementation
-details. Parsing this string is a major platform-compatibility
-hazard.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_error.to_debug_string.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_error.to_debug_string.0"></a> <code>string</code></li>
 </ul>
 <h2><a name="wasi:io_streams_0.2.0"></a>Import interface wasi:io/streams@0.2.0</h2>
 <p>WASI I/O is an I/O abstraction API which is currently focused on providing
@@ -706,6 +650,1058 @@ is ready for reading, before performing the <code>splice</code>.</p>
 <h5>Return values</h5>
 <ul>
 <li><a name="method_output_stream.blocking_splice.0"></a> result&lt;<code>u64</code>, <a href="#stream_error"><a href="#stream_error"><code>stream-error</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:keyvalue_wasi_keyvalue_error_0.1.0"></a>Import interface wasi:keyvalue/wasi-keyvalue-error@0.1.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="error"></a><code>resource error</code></h4>
+<p>An error resource type for keyvalue operations.</p>
+<p>Common errors:</p>
+<ul>
+<li>Connectivity errors (e.g. network errors): when the client cannot establish
+a connection to the keyvalue service.</li>
+<li>Authentication and Authorization errors: when the client fails to authenticate
+or does not have the required permissions to perform the operation.</li>
+<li>Data errors: when the client sends incompatible or corrupted data.</li>
+<li>Resource errors: when the system runs out of resources (e.g. memory).</li>
+<li>Internal errors: unexpected errors on the server side.</li>
+</ul>
+<h2>Currently, this provides only one function to return a string representation
+of the error. In the future, this will be extended to provide more information
+about the error.
+Soon: switch to <code>resource error { ... }</code></h2>
+<h3>Functions</h3>
+<h4><a name="method_error.trace"></a><code>[method]error.trace: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_error.trace.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_error.trace.0"></a> <code>string</code></li>
+</ul>
+<h2><a name="wasi:keyvalue_types_0.1.0"></a>Import interface wasi:keyvalue/types@0.1.0</h2>
+<p>A generic keyvalue interface for WASI.</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="input_stream"></a><code>type input-stream</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+#### <a name="output_stream"></a>`type output-stream`
+[`output-stream`](#output_stream)
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="bucket"></a>`resource bucket`
+<p>A bucket is a collection of key-value pairs. Each key-value pair is stored
+as a entry in the bucket, and the bucket itself acts as a collection of all
+these entries.</p>
+<p>It is worth noting that the exact terminology for bucket in key-value stores
+can very depending on the specific implementation. For example,</p>
+<ol>
+<li>Amazon DynamoDB calls a collection of key-value pairs a table</li>
+<li>Redis has hashes, sets, and sorted sets as different types of collections</li>
+<li>Cassandra calls a collection of key-value pairs a column family</li>
+<li>MongoDB calls a collection of key-value pairs a collection</li>
+<li>Riak calls a collection of key-value pairs a bucket</li>
+<li>Memcached calls a collection of key-value pairs a slab</li>
+<li>Azure Cosmos DB calls a collection of key-value pairs a container</li>
+</ol>
+<p>In this interface, we use the term <a href="#bucket"><code>bucket</code></a> to refer to a collection of key-value
+Soon: switch to <code>resource bucket { ... }</code></p>
+<h4><a name="key"></a><code>type key</code></h4>
+<p><code>string</code></p>
+<p>A key is a unique identifier for a value in a bucket. The key is used to
+retrieve the value from the bucket.
+<h4><a name="outgoing_value"></a><code>resource outgoing-value</code></h4>
+<p>A value is the data stored in a key-value pair. The value can be of any type
+that can be represented in a byte array. It provides a way to write the value
+to the output-stream defined in the <code>wasi-io</code> interface.
+Soon: switch to <code>resource value { ... }</code></p>
+<h4><a name="outgoing_value_body_async"></a><code>type outgoing-value-body-async</code></h4>
+<p><a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a></p>
+<p>
+#### <a name="outgoing_value_body_sync"></a>`type outgoing-value-body-sync`
+[`outgoing-value-body-sync`](#outgoing_value_body_sync)
+<p>
+#### <a name="incoming_value"></a>`resource incoming-value`
+<p>A incoming-value is a wrapper around a value. It provides a way to read the value
+from the <a href="#input_stream"><code>input-stream</code></a> defined in the <code>wasi-io</code> interface.</p>
+<p>The incoming-value provides two ways to consume the value:</p>
+<ol>
+<li><code>incoming-value-consume-sync</code> consumes the value synchronously and returns the
+value as a <code>list&lt;u8&gt;</code>.</li>
+<li><code>incoming-value-consume-async</code> consumes the value asynchronously and returns the
+value as an <a href="#input_stream"><code>input-stream</code></a>.
+In addition, it provides a <code>incoming-value-size</code> function to get the size of the value.
+This is useful when the value is large and the caller wants to allocate a buffer of
+the right size to consume the value.
+Soon: switch to <code>resource incoming-value { ... }</code></li>
+</ol>
+<h4><a name="incoming_value_async_body"></a><code>type incoming-value-async-body</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+#### <a name="incoming_value_sync_body"></a>`type incoming-value-sync-body`
+[`incoming-value-sync-body`](#incoming_value_sync_body)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="static_bucket.open_bucket"></a><code>[static]bucket.open-bucket: func</code></h4>
+<p>Opens a bucket with the given name.</p>
+<p>If any error occurs, including if the bucket does not exist, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="static_bucket.open_bucket.name"></a><code>name</code>: <code>string</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_bucket.open_bucket.0"></a> result&lt;own&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="static_outgoing_value.new_outgoing_value"></a><code>[static]outgoing-value.new-outgoing-value: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_outgoing_value.new_outgoing_value.0"></a> own&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_outgoing_value.outgoing_value_write_body_async"></a><code>[method]outgoing-value.outgoing-value-write-body-async: func</code></h4>
+<p>Writes the value to the output-stream asynchronously.
+If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body_async.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body_async.0"></a> result&lt;own&lt;<a href="#outgoing_value_body_async"><a href="#outgoing_value_body_async"><code>outgoing-value-body-async</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_outgoing_value.outgoing_value_write_body_sync"></a><code>[method]outgoing-value.outgoing-value-write-body-sync: func</code></h4>
+<p>Writes the value to the output-stream synchronously.
+If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body_sync.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+<li><a name="method_outgoing_value.outgoing_value_write_body_sync.value"></a><code>value</code>: <a href="#outgoing_value_body_sync"><a href="#outgoing_value_body_sync"><code>outgoing-value-body-sync</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body_sync.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.incoming_value_consume_sync"></a><code>[method]incoming-value.incoming-value-consume-sync: func</code></h4>
+<p>Consumes the value synchronously and returns the value as a list of bytes.
+If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_sync.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.incoming_value_consume_async"></a><code>[method]incoming-value.incoming-value-consume-async: func</code></h4>
+<p>Consumes the value asynchronously and returns the value as an <a href="#input_stream"><code>input-stream</code></a>.
+If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_async.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.incoming_value_size"></a><code>[method]incoming-value.incoming-value-size: func</code></h4>
+<p>The size of the value in bytes.
+If the size is unknown or unavailable, this function returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_size.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_size.0"></a> result&lt;<code>u64</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:keyvalue_eventual_0.1.0"></a>Import interface wasi:keyvalue/eventual@0.1.0</h2>
+<p>A keyvalue interface that provides eventually consistent CRUD operations.</p>
+<p>A CRUD operation is an operation that acts on a single key-value pair.</p>
+<p>The value in the key-value pair is defined as a <code>u8</code> byte array and the intention
+is that it is the common denominator for all data types defined by different
+key-value stores to handle data, ensuring compatibility between different
+key-value stores. Note: the clients will be expecting serialization/deserialization overhead
+to be handled by the key-value store. The value could be a serialized object from
+JSON, HTML or vendor-specific data types like AWS S3 objects.</p>
+<p>Data consistency in a key value store refers to the gaurantee that once a
+write operation completes, all subsequent read operations will return the
+value that was written.</p>
+<p>The level of consistency in readwrite interfaces is <strong>eventual consistency</strong>,
+which means that if a write operation completes successfully, all subsequent
+read operations will eventually return the value that was written. In other words,
+if we pause the updates to the system, the system eventually will return
+the last updated value for read.</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="bucket"></a><code>type bucket</code></h4>
+<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="incoming_value"></a>`type incoming-value`
+[`incoming-value`](#incoming_value)
+<p>
+#### <a name="key"></a>`type key`
+[`key`](#key)
+<p>
+#### <a name="outgoing_value"></a>`type outgoing-value`
+[`outgoing-value`](#outgoing_value)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="get"></a><code>get: func</code></h4>
+<p>Get the value associated with the key in the bucket.</p>
+<p>The value is returned as an option. If the key-value pair exists in the
+bucket, it returns <code>Ok(value)</code>. If the key does not exist in the
+bucket, it returns <code>Ok(none)</code>.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="get.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="get.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="get.0"></a> result&lt;option&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="set"></a><code>set: func</code></h4>
+<p>Set the value associated with the key in the bucket. If the key already
+exists in the bucket, it overwrites the value.</p>
+<p>If the key does not exist in the bucket, it creates a new key-value pair.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="set.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="set.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+<li><a name="set.outgoing_value"></a><a href="#outgoing_value"><code>outgoing-value</code></a>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="set.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="delete"></a><code>delete: func</code></h4>
+<p>Delete the key-value pair associated with the key in the bucket.</p>
+<p>If the key does not exist in the bucket, it does nothing.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="delete.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="delete.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="delete.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="exists"></a><code>exists: func</code></h4>
+<p>Check if the key exists in the bucket.</p>
+<p>If the key exists in the bucket, it returns <code>Ok(true)</code>. If the key does
+not exist in the bucket, it returns <code>Ok(false)</code>.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="exists.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="exists.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="exists.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:keyvalue_atomic_0.1.0"></a>Import interface wasi:keyvalue/atomic@0.1.0</h2>
+<p>A keyvalue interface that provides atomic operations.</p>
+<p>Atomic operations are single, indivisible operations. When a fault causes
+an atomic operation to fail, it will appear to the invoker of the atomic
+operation that the action either completed successfully or did nothing
+at all.</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="bucket"></a><code>type bucket</code></h4>
+<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="key"></a>`type key`
+[`key`](#key)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="increment"></a><code>increment: func</code></h4>
+<p>Atomically increment the value associated with the key in the bucket by the
+given delta. It returns the new value.</p>
+<p>If the key does not exist in the bucket, it creates a new key-value pair
+with the value set to the given delta.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="increment.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="increment.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+<li><a name="increment.delta"></a><code>delta</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="increment.0"></a> result&lt;<code>u64</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="compare_and_swap"></a><code>compare-and-swap: func</code></h4>
+<p>Compare-and-swap (CAS) atomically updates the value associated with the key
+in the bucket if the value matches the old value. This operation returns
+<code>Ok(true)</code> if the swap was successful, <code>Ok(false)</code> if the value did not match,</p>
+<p>A successful CAS operation means the current value matched the <code>old</code> value
+and was replaced with the <code>new</code> value.</p>
+<p>If the key does not exist in the bucket, it returns <code>Ok(false)</code>.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="compare_and_swap.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="compare_and_swap.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
+<li><a name="compare_and_swap.old"></a><code>old</code>: <code>u64</code></li>
+<li><a name="compare_and_swap.new"></a><code>new</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="compare_and_swap.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:keyvalue_eventual_batch_0.1.0"></a>Import interface wasi:keyvalue/eventual-batch@0.1.0</h2>
+<p>A keyvalue interface that provides eventually consistent batch operations.</p>
+<p>A batch operation is an operation that operates on multiple keys at once.</p>
+<p>Batch operations are useful for reducing network round-trip time. For example,
+if you want to get the values associated with 100 keys, you can either do 100 get
+operations or you can do 1 batch get operation. The batch operation is
+faster because it only needs to make 1 network call instead of 100.</p>
+<p>A batch operation does not guarantee atomicity, meaning that if the batch
+operation fails, some of the keys may have been modified and some may not.
+Transactional operations are being worked on and will be added in the future to
+provide atomicity.</p>
+<p>Data consistency in a key value store refers to the gaurantee that once a
+write operation completes, all subsequent read operations will return the
+value that was written.</p>
+<p>The level of consistency in batch operations is <strong>eventual consistency</strong>, the same
+with the readwrite interface. This interface does not guarantee strong consistency,
+meaning that if a write operation completes, subsequent read operations may not return
+the value that was written.</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="bucket"></a><code>type bucket</code></h4>
+<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="key"></a>`type key`
+[`key`](#key)
+<p>
+#### <a name="incoming_value"></a>`type incoming-value`
+[`incoming-value`](#incoming_value)
+<p>
+#### <a name="outgoing_value"></a>`type outgoing-value`
+[`outgoing-value`](#outgoing_value)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="get_many"></a><code>get-many: func</code></h4>
+<p>Get the values associated with the keys in the bucket. It returns a list of
+incoming-value that can be consumed to get the value associated with the key.</p>
+<p>If any of the keys do not exist in the bucket, it returns a <code>none</code> value for
+that key in the list.</p>
+<p>Note that the key-value pairs are guaranteed to be returned in the same order</p>
+<p>MAY show an out-of-date value if there are concurrent writes to the bucket.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="get_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="get_many.keys"></a><a href="#keys"><code>keys</code></a>: list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_many.0"></a> result&lt;list&lt;option&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="keys"></a><code>keys: func</code></h4>
+<p>Get all the keys in the bucket. It returns a list of keys.</p>
+<p>Note that the keys are not guaranteed to be returned in any particular order.</p>
+<p>If the bucket is empty, it returns an empty list.</p>
+<p>MAY show an out-of-date list of keys if there are concurrent writes to the bucket.</p>
+<p>If any error occurs, it returns an <code>Err(error)</code>.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="keys.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="keys.0"></a> result&lt;list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="set_many"></a><code>set-many: func</code></h4>
+<p>Set the values associated with the keys in the bucket. If the key already
+exists in the bucket, it overwrites the value.</p>
+<p>Note that the key-value pairs are not guaranteed to be set in the order
+they are provided.</p>
+<p>If any of the keys do not exist in the bucket, it creates a new key-value pair.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>. When an error occurs, it
+does not rollback the key-value pairs that were already set. Thus, this batch operation
+does not guarantee atomicity, implying that some key-value pairs could be
+set while others might fail.</p>
+<p>Other concurrent operations may also be able to see the partial results.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="set_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="set_many.key_values"></a><code>key-values</code>: list&lt;(<a href="#key"><a href="#key"><code>key</code></a></a>, borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;)&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="set_many.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="delete_many"></a><code>delete-many: func</code></h4>
+<p>Delete the key-value pairs associated with the keys in the bucket.</p>
+<p>Note that the key-value pairs are not guaranteed to be deleted in the order
+they are provided.</p>
+<p>If any of the keys do not exist in the bucket, it skips the key.</p>
+<p>If any other error occurs, it returns an <code>Err(error)</code>. When an error occurs, it
+does not rollback the key-value pairs that were already deleted. Thus, this batch operation
+does not guarantee atomicity, implying that some key-value pairs could be
+deleted while others might fail.</p>
+<p>Other concurrent operations may also be able to see the partial results.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="delete_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
+<li><a name="delete_many.keys"></a><a href="#keys"><code>keys</code></a>: list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="delete_many.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:blobstore_types_0.1.0"></a>Import interface wasi:blobstore/types@0.1.0</h2>
+<p>Types used by blobstore</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="input_stream"></a><code>type input-stream</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+#### <a name="output_stream"></a>`type output-stream`
+[`output-stream`](#output_stream)
+<p>
+#### <a name="container_name"></a>`type container-name`
+`string`
+<p>name of a container, a collection of objects.
+The container name may be any valid UTF-8 string.
+<h4><a name="object_name"></a><code>type object-name</code></h4>
+<p><code>string</code></p>
+<p>name of an object within a container
+The object name may be any valid UTF-8 string.
+<h4><a name="timestamp"></a><code>type timestamp</code></h4>
+<p><code>u64</code></p>
+<p>TODO: define timestamp to include seconds since
+Unix epoch and nanoseconds
+https://github.com/WebAssembly/wasi-blob-store/issues/7
+<h4><a name="object_size"></a><code>type object-size</code></h4>
+<p><code>u64</code></p>
+<p>size of an object, in bytes
+<h4><a name="error"></a><code>type error</code></h4>
+<p><code>string</code></p>
+<p>
+#### <a name="container_metadata"></a>`record container-metadata`
+<p>information about a container</p>
+<h5>Record Fields</h5>
+<ul>
+<li>
+<p><a name="container_metadata.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></p>
+<p>the container's name
+</li>
+<li>
+<p><a name="container_metadata.created_at"></a><code>created-at</code>: <a href="#timestamp"><a href="#timestamp"><code>timestamp</code></a></a></p>
+<p>date and time container was created
+</li>
+</ul>
+<h4><a name="object_metadata"></a><code>record object-metadata</code></h4>
+<p>information about an object</p>
+<h5>Record Fields</h5>
+<ul>
+<li>
+<p><a name="object_metadata.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></p>
+<p>the object's name
+</li>
+<li>
+<p><a name="object_metadata.container"></a><a href="#container"><code>container</code></a>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></p>
+<p>the object's parent container
+</li>
+<li>
+<p><a name="object_metadata.created_at"></a><code>created-at</code>: <a href="#timestamp"><a href="#timestamp"><code>timestamp</code></a></a></p>
+<p>date and time the object was created
+</li>
+<li>
+<p><a name="object_metadata.size"></a><code>size</code>: <a href="#object_size"><a href="#object_size"><code>object-size</code></a></a></p>
+<p>size of the object, in bytes
+</li>
+</ul>
+<h4><a name="object_id"></a><code>record object-id</code></h4>
+<p>identifier for an object that includes its container name</p>
+<h5>Record Fields</h5>
+<ul>
+<li><a name="object_id.container"></a><a href="#container"><code>container</code></a>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
+<li><a name="object_id.object"></a><code>object</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+</ul>
+<h4><a name="outgoing_value"></a><code>resource outgoing-value</code></h4>
+<p>A data is the data stored in a data blob. The value can be of any type
+that can be represented in a byte array. It provides a way to write the value
+to the output-stream defined in the <code>wasi-io</code> interface.
+Soon: switch to <code>resource value { ... }</code></p>
+<h4><a name="incoming_value"></a><code>resource incoming-value</code></h4>
+<p>A incoming-value is a wrapper around a value. It provides a way to read the value
+from the input-stream defined in the <code>wasi-io</code> interface.</p>
+<p>The incoming-value provides two ways to consume the value:</p>
+<ol>
+<li><code>incoming-value-consume-sync</code> consumes the value synchronously and returns the
+value as a list of bytes.</li>
+<li><code>incoming-value-consume-async</code> consumes the value asynchronously and returns the
+value as an input-stream.
+Soon: switch to <code>resource incoming-value { ... }</code></li>
+</ol>
+<h4><a name="incoming_value_async_body"></a><code>type incoming-value-async-body</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+#### <a name="incoming_value_sync_body"></a>`type incoming-value-sync-body`
+[`incoming-value-sync-body`](#incoming_value_sync_body)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="static_outgoing_value.new_outgoing_value"></a><code>[static]outgoing-value.new-outgoing-value: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_outgoing_value.new_outgoing_value.0"></a> own&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_outgoing_value.outgoing_value_write_body"></a><code>[method]outgoing-value.outgoing-value-write-body: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_outgoing_value.outgoing_value_write_body.0"></a> result&lt;own&lt;<a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.incoming_value_consume_sync"></a><code>[method]incoming-value.incoming-value-consume-sync: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_sync.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.incoming_value_consume_async"></a><code>[method]incoming-value.incoming-value-consume-async: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_async.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_incoming_value.size"></a><code>[method]incoming-value.size: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_incoming_value.size.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_incoming_value.size.0"></a> <code>u64</code></li>
+</ul>
+<h2><a name="wasi:blobstore_container_0.1.0"></a>Import interface wasi:blobstore/container@0.1.0</h2>
+<p>a Container is a collection of objects</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="input_stream"></a><code>type input-stream</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+#### <a name="output_stream"></a>`type output-stream`
+[`output-stream`](#output_stream)
+<p>
+#### <a name="container_metadata"></a>`type container-metadata`
+[`container-metadata`](#container_metadata)
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="incoming_value"></a>`type incoming-value`
+[`incoming-value`](#incoming_value)
+<p>
+#### <a name="object_metadata"></a>`type object-metadata`
+[`object-metadata`](#object_metadata)
+<p>
+#### <a name="object_name"></a>`type object-name`
+[`object-name`](#object_name)
+<p>
+#### <a name="outgoing_value"></a>`type outgoing-value`
+[`outgoing-value`](#outgoing_value)
+<p>
+#### <a name="container"></a>`resource container`
+<p>this defines the <a href="#container"><code>container</code></a> resource</p>
+<h4><a name="stream_object_names"></a><code>resource stream-object-names</code></h4>
+<h2>this defines the <a href="#stream_object_names"><code>stream-object-names</code></a> resource which is a representation of stream<object-name></h2>
+<h3>Functions</h3>
+<h4><a name="method_container.name"></a><code>[method]container.name: func</code></h4>
+<p>returns container name</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.name.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.name.0"></a> result&lt;<code>string</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.info"></a><code>[method]container.info: func</code></h4>
+<p>returns container metadata</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.info.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.info.0"></a> result&lt;<a href="#container_metadata"><a href="#container_metadata"><code>container-metadata</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.get_data"></a><code>[method]container.get-data: func</code></h4>
+<p>retrieves an object or portion of an object, as a resource.
+Start and end offsets are inclusive.
+Once a data-blob resource has been created, the underlying bytes are held by the blobstore service for the lifetime
+of the data-blob resource, even if the object they came from is later deleted.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.get_data.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.get_data.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+<li><a name="method_container.get_data.start"></a><code>start</code>: <code>u64</code></li>
+<li><a name="method_container.get_data.end"></a><code>end</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.get_data.0"></a> result&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.write_data"></a><code>[method]container.write-data: func</code></h4>
+<p>creates or replaces an object with the data blob.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.write_data.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.write_data.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+<li><a name="method_container.write_data.data"></a><code>data</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.write_data.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.list_objects"></a><code>[method]container.list-objects: func</code></h4>
+<p>returns list of objects in the container. Order is undefined.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.list_objects.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.list_objects.0"></a> result&lt;own&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.delete_object"></a><code>[method]container.delete-object: func</code></h4>
+<p>deletes object.
+does not return error if object did not exist.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.delete_object.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.delete_object.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.delete_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.delete_objects"></a><code>[method]container.delete-objects: func</code></h4>
+<p>deletes multiple objects in the container</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.delete_objects.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.delete_objects.names"></a><code>names</code>: list&lt;<a href="#object_name"><a href="#object_name"><code>object-name</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.delete_objects.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.has_object"></a><code>[method]container.has-object: func</code></h4>
+<p>returns true if the object exists in this container</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.has_object.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.has_object.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.has_object.0"></a> result&lt;<code>bool</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.object_info"></a><code>[method]container.object-info: func</code></h4>
+<p>returns metadata for the object</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.object_info.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+<li><a name="method_container.object_info.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.object_info.0"></a> result&lt;<a href="#object_metadata"><a href="#object_metadata"><code>object-metadata</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_container.clear"></a><code>[method]container.clear: func</code></h4>
+<p>removes all objects within the container, leaving the container empty.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_container.clear.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_container.clear.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_stream_object_names.read_stream_object_names"></a><code>[method]stream-object-names.read-stream-object-names: func</code></h4>
+<p>reads the next number of objects from the stream</p>
+<p>This function returns the list of objects read, and a boolean indicating if the end of the stream was reached.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_stream_object_names.read_stream_object_names.self"></a><code>self</code>: borrow&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;</li>
+<li><a name="method_stream_object_names.read_stream_object_names.len"></a><code>len</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_stream_object_names.read_stream_object_names.0"></a> result&lt;(list&lt;<a href="#object_name"><a href="#object_name"><code>object-name</code></a></a>&gt;, <code>bool</code>), <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="method_stream_object_names.skip_stream_object_names"></a><code>[method]stream-object-names.skip-stream-object-names: func</code></h4>
+<p>skip the next number of objects in the stream</p>
+<p>This function returns the number of objects skipped, and a boolean indicating if the end of the stream was reached.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="method_stream_object_names.skip_stream_object_names.self"></a><code>self</code>: borrow&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;</li>
+<li><a name="method_stream_object_names.skip_stream_object_names.num"></a><code>num</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_stream_object_names.skip_stream_object_names.0"></a> result&lt;(<code>u64</code>, <code>bool</code>), <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:blobstore_blobstore_0.1.0"></a>Import interface wasi:blobstore/blobstore@0.1.0</h2>
+<p>wasi-cloud Blobstore service definition</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="container"></a><code>type container</code></h4>
+<p><a href="#container"><a href="#container"><code>container</code></a></a></p>
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="container_name"></a>`type container-name`
+[`container-name`](#container_name)
+<p>
+#### <a name="object_id"></a>`type object-id`
+[`object-id`](#object_id)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="create_container"></a><code>create-container: func</code></h4>
+<p>creates a new empty container</p>
+<h5>Params</h5>
+<ul>
+<li><a name="create_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="create_container.0"></a> result&lt;own&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="get_container"></a><code>get-container: func</code></h4>
+<p>retrieves a container by name</p>
+<h5>Params</h5>
+<ul>
+<li><a name="get_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_container.0"></a> result&lt;own&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="delete_container"></a><code>delete-container: func</code></h4>
+<p>deletes a container and all objects within it</p>
+<h5>Params</h5>
+<ul>
+<li><a name="delete_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="delete_container.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="container_exists"></a><code>container-exists: func</code></h4>
+<p>returns true if the container exists</p>
+<h5>Params</h5>
+<ul>
+<li><a name="container_exists.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="container_exists.0"></a> result&lt;<code>bool</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="copy_object"></a><code>copy-object: func</code></h4>
+<p>copies (duplicates) an object, to the same or a different container.
+returns an error if the target container does not exist.
+overwrites destination object if it already existed.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="copy_object.src"></a><code>src</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
+<li><a name="copy_object.dest"></a><code>dest</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="copy_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="move_object"></a><code>move-object: func</code></h4>
+<p>moves or renames an object, to the same or a different container
+returns an error if the destination container does not exist.
+overwrites destination object if it already existed.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="move_object.src"></a><code>src</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
+<li><a name="move_object.dest"></a><code>dest</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="move_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:sql_types_0.1.0"></a>Import interface wasi:sql/types@0.1.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="data_type"></a><code>variant data-type</code></h4>
+<p>common data types</p>
+<h5>Variant Cases</h5>
+<ul>
+<li><a name="data_type.int32"></a><code>int32</code>: <code>s32</code></li>
+<li><a name="data_type.int64"></a><code>int64</code>: <code>s64</code></li>
+<li><a name="data_type.uint32"></a><code>uint32</code>: <code>u32</code></li>
+<li><a name="data_type.uint64"></a><code>uint64</code>: <code>u64</code></li>
+<li><a name="data_type.float"></a><code>float</code>: <code>float64</code></li>
+<li><a name="data_type.double"></a><code>double</code>: <code>float64</code></li>
+<li><a name="data_type.str"></a><code>str</code>: <code>string</code></li>
+<li><a name="data_type.boolean"></a><code>boolean</code>: <code>bool</code></li>
+<li><a name="data_type.date"></a><code>date</code>: <code>string</code></li>
+<li><a name="data_type.time"></a><code>time</code>: <code>string</code></li>
+<li><a name="data_type.timestamp"></a><a href="#timestamp"><code>timestamp</code></a>: <code>string</code></li>
+<li><a name="data_type.binary"></a><code>binary</code>: list&lt;<code>u8</code>&gt;</li>
+<li><a name="data_type.null"></a><code>null</code></li>
+</ul>
+<h4><a name="row"></a><code>record row</code></h4>
+<p>one single row item</p>
+<h5>Record Fields</h5>
+<ul>
+<li><a name="row.field_name"></a><code>field-name</code>: <code>string</code></li>
+<li><a name="row.value"></a><code>value</code>: <a href="#data_type"><a href="#data_type"><code>data-type</code></a></a></li>
+</ul>
+<h4><a name="statement"></a><code>resource statement</code></h4>
+<p>allows parameterized queries
+e.g., prepare(&quot;SELECT * FROM users WHERE name = ? AND age = ?&quot;, vec![&quot;John Doe&quot;, &quot;32&quot;])</p>
+<h4><a name="error"></a><code>resource error</code></h4>
+<p>An error resource type.
+Currently, this provides only one function to return a string representation
+of the error. In the future, this will be extended to provide more information.</p>
+<h4><a name="connection"></a><code>resource connection</code></h4>
+<h2>A connection to a sql store.</h2>
+<h3>Functions</h3>
+<h4><a name="static_statement.prepare"></a><code>[static]statement.prepare: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="static_statement.prepare.query"></a><a href="#query"><code>query</code></a>: <code>string</code></li>
+<li><a name="static_statement.prepare.params"></a><code>params</code>: list&lt;<code>string</code>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_statement.prepare.0"></a> result&lt;own&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="method_error.trace"></a><code>[method]error.trace: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="method_error.trace.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="method_error.trace.0"></a> <code>string</code></li>
+</ul>
+<h4><a name="static_connection.open"></a><code>[static]connection.open: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="static_connection.open.name"></a><code>name</code>: <code>string</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_connection.open.0"></a> result&lt;own&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:sql_readwrite_0.1.0"></a>Import interface wasi:sql/readwrite@0.1.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="statement"></a><code>type statement</code></h4>
+<p><a href="#statement"><a href="#statement"><code>statement</code></a></a></p>
+<p>
+#### <a name="row"></a>`type row`
+[`row`](#row)
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="connection"></a>`type connection`
+[`connection`](#connection)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="query"></a><code>query: func</code></h4>
+<p>query is optimized for querying data, and
+implementors can make use of that fact to optimize
+the performance of query execution (e.g., using
+indexes).</p>
+<h5>Params</h5>
+<ul>
+<li><a name="query.c"></a><code>c</code>: borrow&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;</li>
+<li><a name="query.q"></a><code>q</code>: borrow&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="query.0"></a> result&lt;list&lt;<a href="#row"><a href="#row"><code>row</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="exec"></a><code>exec: func</code></h4>
+<p>exec is for modifying data in the database.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="exec.c"></a><code>c</code>: borrow&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;</li>
+<li><a name="exec.q"></a><code>q</code>: borrow&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="exec.0"></a> result&lt;<code>u32</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:random_random_0.2.0"></a>Import interface wasi:random/random@0.2.0</h2>
+<p>WASI Random is a random data API.</p>
+<p>It is intended to be portable at least between Unix-family platforms and
+Windows.</p>
+<hr />
+<h3>Functions</h3>
+<h4><a name="get_random_bytes"></a><code>get-random-bytes: func</code></h4>
+<p>Return <code>len</code> cryptographically-secure random or pseudo-random bytes.</p>
+<p>This function must produce data at least as cryptographically secure and
+fast as an adequately seeded cryptographically-secure pseudo-random
+number generator (CSPRNG). It must not block, from the perspective of
+the calling program, under any circumstances, including on the first
+request and on requests for numbers of bytes. The returned data must
+always be unpredictable.</p>
+<p>This function must always return fresh data. Deterministic environments
+must omit this function, rather than implementing it with deterministic
+data.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="get_random_bytes.len"></a><code>len</code>: <code>u64</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_random_bytes.0"></a> list&lt;<code>u8</code>&gt;</li>
+</ul>
+<h4><a name="get_random_u64"></a><code>get-random-u64: func</code></h4>
+<p>Return a cryptographically-secure random or pseudo-random <code>u64</code> value.</p>
+<p>This function returns the same type of data as <a href="#get_random_bytes"><code>get-random-bytes</code></a>,
+represented as a <code>u64</code>.</p>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_random_u64.0"></a> <code>u64</code></li>
+</ul>
+<h2><a name="wasi:cli_stdout_0.2.0"></a>Import interface wasi:cli/stdout@0.2.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="output_stream"></a><code>type output-stream</code></h4>
+<p><a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a></p>
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="get_stdout"></a><code>get-stdout: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_stdout.0"></a> own&lt;<a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:cli_stderr_0.2.0"></a>Import interface wasi:cli/stderr@0.2.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="output_stream"></a><code>type output-stream</code></h4>
+<p><a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a></p>
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="get_stderr"></a><code>get-stderr: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_stderr.0"></a> own&lt;<a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:cli_stdin_0.2.0"></a>Import interface wasi:cli/stdin@0.2.0</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="input_stream"></a><code>type input-stream</code></h4>
+<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="get_stdin"></a><code>get-stdin: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_stdin.0"></a> own&lt;<a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a>&gt;</li>
+</ul>
+<h2><a name="wasi:clocks_monotonic_clock_0.2.0"></a>Import interface wasi:clocks/monotonic-clock@0.2.0</h2>
+<p>WASI Monotonic Clock is a clock API intended to let users measure elapsed
+time.</p>
+<p>It is intended to be portable at least between Unix-family platforms and
+Windows.</p>
+<p>A monotonic clock is a clock which has an unspecified initial value, and
+successive reads of the clock will produce non-decreasing values.</p>
+<p>It is intended for measuring elapsed time.</p>
+<hr />
+<h3>Types</h3>
+<h4><a name="pollable"></a><code>type pollable</code></h4>
+<p><a href="#pollable"><a href="#pollable"><code>pollable</code></a></a></p>
+<p>
+#### <a name="instant"></a>`type instant`
+`u64`
+<p>An instant in time, in nanoseconds. An instant is relative to an
+unspecified initial value, and can only be compared to instances from
+the same monotonic-clock.
+<h4><a name="duration"></a><code>type duration</code></h4>
+<p><code>u64</code></p>
+<p>A duration of time, in nanoseconds.
+<hr />
+<h3>Functions</h3>
+<h4><a name="now"></a><code>now: func</code></h4>
+<p>Read the current value of the clock.</p>
+<p>The clock is monotonic, therefore calling this function repeatedly will
+produce a sequence of non-decreasing values.</p>
+<h5>Return values</h5>
+<ul>
+<li><a name="now.0"></a> <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+</ul>
+<h4><a name="resolution"></a><code>resolution: func</code></h4>
+<p>Query the resolution of the clock. Returns the duration of time
+corresponding to a clock tick.</p>
+<h5>Return values</h5>
+<ul>
+<li><a name="resolution.0"></a> <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
+</ul>
+<h4><a name="subscribe_instant"></a><code>subscribe-instant: func</code></h4>
+<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the specified instant
+occured.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="subscribe_instant.when"></a><code>when</code>: <a href="#instant"><a href="#instant"><code>instant</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="subscribe_instant.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
+</ul>
+<h4><a name="subscribe_duration"></a><code>subscribe-duration: func</code></h4>
+<p>Create a <a href="#pollable"><code>pollable</code></a> which will resolve once the given duration has
+elapsed, starting at the time at which this function was called.
+occured.</p>
+<h5>Params</h5>
+<ul>
+<li><a name="subscribe_duration.when"></a><code>when</code>: <a href="#duration"><a href="#duration"><code>duration</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="subscribe_duration.0"></a> own&lt;<a href="#pollable"><a href="#pollable"><code>pollable</code></a></a>&gt;</li>
 </ul>
 <h2><a name="wasi:http_types_0.2.0"></a>Import interface wasi:http/types@0.2.0</h2>
 <p>This interface defines all of the types and methods for implementing
@@ -1630,922 +2626,44 @@ through the <a href="#future_incoming_response"><code>future-incoming-response</
 <ul>
 <li><a name="handle.0"></a> result&lt;own&lt;<a href="#future_incoming_response"><a href="#future_incoming_response"><code>future-incoming-response</code></a></a>&gt;, <a href="#error_code"><a href="#error_code"><code>error-code</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi:keyvalue_wasi_keyvalue_error_0.1.0"></a>Import interface wasi:keyvalue/wasi-keyvalue-error@0.1.0</h2>
+<h2><a name="wasi:clocks_wall_clock_0.2.0"></a>Import interface wasi:clocks/wall-clock@0.2.0</h2>
+<p>WASI Wall Clock is a clock API intended to let users query the current
+time. The name &quot;wall&quot; makes an analogy to a &quot;clock on the wall&quot;, which
+is not necessarily monotonic as it may be reset.</p>
+<p>It is intended to be portable at least between Unix-family platforms and
+Windows.</p>
+<p>A wall clock is a clock which measures the date and time according to
+some external reference.</p>
+<p>External references may be reset, so this clock is not necessarily
+monotonic, making it unsuitable for measuring elapsed time.</p>
+<p>It is intended for reporting the current date and time for humans.</p>
 <hr />
 <h3>Types</h3>
-<h4><a name="error"></a><code>resource error</code></h4>
-<p>An error resource type for keyvalue operations.</p>
-<p>Common errors:</p>
-<ul>
-<li>Connectivity errors (e.g. network errors): when the client cannot establish
-a connection to the keyvalue service.</li>
-<li>Authentication and Authorization errors: when the client fails to authenticate
-or does not have the required permissions to perform the operation.</li>
-<li>Data errors: when the client sends incompatible or corrupted data.</li>
-<li>Resource errors: when the system runs out of resources (e.g. memory).</li>
-<li>Internal errors: unexpected errors on the server side.</li>
-</ul>
-<h2>Currently, this provides only one function to return a string representation
-of the error. In the future, this will be extended to provide more information
-about the error.
-Soon: switch to <code>resource error { ... }</code></h2>
-<h3>Functions</h3>
-<h4><a name="method_error.trace"></a><code>[method]error.trace: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_error.trace.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_error.trace.0"></a> <code>string</code></li>
-</ul>
-<h2><a name="wasi:keyvalue_types_0.1.0"></a>Import interface wasi:keyvalue/types@0.1.0</h2>
-<p>A generic keyvalue interface for WASI.</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="input_stream"></a><code>type input-stream</code></h4>
-<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
-<p>
-#### <a name="output_stream"></a>`type output-stream`
-[`output-stream`](#output_stream)
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="bucket"></a>`resource bucket`
-<p>A bucket is a collection of key-value pairs. Each key-value pair is stored
-as a entry in the bucket, and the bucket itself acts as a collection of all
-these entries.</p>
-<p>It is worth noting that the exact terminology for bucket in key-value stores
-can very depending on the specific implementation. For example,</p>
-<ol>
-<li>Amazon DynamoDB calls a collection of key-value pairs a table</li>
-<li>Redis has hashes, sets, and sorted sets as different types of collections</li>
-<li>Cassandra calls a collection of key-value pairs a column family</li>
-<li>MongoDB calls a collection of key-value pairs a collection</li>
-<li>Riak calls a collection of key-value pairs a bucket</li>
-<li>Memcached calls a collection of key-value pairs a slab</li>
-<li>Azure Cosmos DB calls a collection of key-value pairs a container</li>
-</ol>
-<p>In this interface, we use the term <a href="#bucket"><code>bucket</code></a> to refer to a collection of key-value
-Soon: switch to <code>resource bucket { ... }</code></p>
-<h4><a name="key"></a><code>type key</code></h4>
-<p><code>string</code></p>
-<p>A key is a unique identifier for a value in a bucket. The key is used to
-retrieve the value from the bucket.
-<h4><a name="outgoing_value"></a><code>resource outgoing-value</code></h4>
-<p>A value is the data stored in a key-value pair. The value can be of any type
-that can be represented in a byte array. It provides a way to write the value
-to the output-stream defined in the <code>wasi-io</code> interface.
-Soon: switch to <code>resource value { ... }</code></p>
-<h4><a name="outgoing_value_body_async"></a><code>type outgoing-value-body-async</code></h4>
-<p><a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a></p>
-<p>
-#### <a name="outgoing_value_body_sync"></a>`type outgoing-value-body-sync`
-[`outgoing-value-body-sync`](#outgoing_value_body_sync)
-<p>
-#### <a name="incoming_value"></a>`resource incoming-value`
-<p>A incoming-value is a wrapper around a value. It provides a way to read the value
-from the <a href="#input_stream"><code>input-stream</code></a> defined in the <code>wasi-io</code> interface.</p>
-<p>The incoming-value provides two ways to consume the value:</p>
-<ol>
-<li><code>incoming-value-consume-sync</code> consumes the value synchronously and returns the
-value as a <code>list&lt;u8&gt;</code>.</li>
-<li><code>incoming-value-consume-async</code> consumes the value asynchronously and returns the
-value as an <a href="#input_stream"><code>input-stream</code></a>.
-In addition, it provides a <code>incoming-value-size</code> function to get the size of the value.
-This is useful when the value is large and the caller wants to allocate a buffer of
-the right size to consume the value.
-Soon: switch to <code>resource incoming-value { ... }</code></li>
-</ol>
-<h4><a name="incoming_value_async_body"></a><code>type incoming-value-async-body</code></h4>
-<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
-<p>
-#### <a name="incoming_value_sync_body"></a>`type incoming-value-sync-body`
-[`incoming-value-sync-body`](#incoming_value_sync_body)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="static_bucket.open_bucket"></a><code>[static]bucket.open-bucket: func</code></h4>
-<p>Opens a bucket with the given name.</p>
-<p>If any error occurs, including if the bucket does not exist, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="static_bucket.open_bucket.name"></a><code>name</code>: <code>string</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_bucket.open_bucket.0"></a> result&lt;own&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="static_outgoing_value.new_outgoing_value"></a><code>[static]outgoing-value.new-outgoing-value: func</code></h4>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_outgoing_value.new_outgoing_value.0"></a> own&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_outgoing_value.outgoing_value_write_body_async"></a><code>[method]outgoing-value.outgoing-value-write-body-async: func</code></h4>
-<p>Writes the value to the output-stream asynchronously.
-If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body_async.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body_async.0"></a> result&lt;own&lt;<a href="#outgoing_value_body_async"><a href="#outgoing_value_body_async"><code>outgoing-value-body-async</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_outgoing_value.outgoing_value_write_body_sync"></a><code>[method]outgoing-value.outgoing-value-write-body-sync: func</code></h4>
-<p>Writes the value to the output-stream synchronously.
-If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body_sync.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-<li><a name="method_outgoing_value.outgoing_value_write_body_sync.value"></a><code>value</code>: <a href="#outgoing_value_body_sync"><a href="#outgoing_value_body_sync"><code>outgoing-value-body-sync</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body_sync.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.incoming_value_consume_sync"></a><code>[method]incoming-value.incoming-value-consume-sync: func</code></h4>
-<p>Consumes the value synchronously and returns the value as a list of bytes.
-If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.incoming_value_consume_async"></a><code>[method]incoming-value.incoming-value-consume-async: func</code></h4>
-<p>Consumes the value asynchronously and returns the value as an <a href="#input_stream"><code>input-stream</code></a>.
-If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.incoming_value_size"></a><code>[method]incoming-value.incoming-value-size: func</code></h4>
-<p>The size of the value in bytes.
-If the size is unknown or unavailable, this function returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_size.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_size.0"></a> result&lt;<code>u64</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:keyvalue_eventual_0.1.0"></a>Import interface wasi:keyvalue/eventual@0.1.0</h2>
-<p>A keyvalue interface that provides eventually consistent CRUD operations.</p>
-<p>A CRUD operation is an operation that acts on a single key-value pair.</p>
-<p>The value in the key-value pair is defined as a <code>u8</code> byte array and the intention
-is that it is the common denominator for all data types defined by different
-key-value stores to handle data, ensuring compatibility between different
-key-value stores. Note: the clients will be expecting serialization/deserialization overhead
-to be handled by the key-value store. The value could be a serialized object from
-JSON, HTML or vendor-specific data types like AWS S3 objects.</p>
-<p>Data consistency in a key value store refers to the gaurantee that once a
-write operation completes, all subsequent read operations will return the
-value that was written.</p>
-<p>The level of consistency in readwrite interfaces is <strong>eventual consistency</strong>,
-which means that if a write operation completes successfully, all subsequent
-read operations will eventually return the value that was written. In other words,
-if we pause the updates to the system, the system eventually will return
-the last updated value for read.</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="bucket"></a><code>type bucket</code></h4>
-<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="incoming_value"></a>`type incoming-value`
-[`incoming-value`](#incoming_value)
-<p>
-#### <a name="key"></a>`type key`
-[`key`](#key)
-<p>
-#### <a name="outgoing_value"></a>`type outgoing-value`
-[`outgoing-value`](#outgoing_value)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="get"></a><code>get: func</code></h4>
-<p>Get the value associated with the key in the bucket.</p>
-<p>The value is returned as an option. If the key-value pair exists in the
-bucket, it returns <code>Ok(value)</code>. If the key does not exist in the
-bucket, it returns <code>Ok(none)</code>.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="get.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="get.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="get.0"></a> result&lt;option&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="set"></a><code>set: func</code></h4>
-<p>Set the value associated with the key in the bucket. If the key already
-exists in the bucket, it overwrites the value.</p>
-<p>If the key does not exist in the bucket, it creates a new key-value pair.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="set.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="set.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-<li><a name="set.outgoing_value"></a><a href="#outgoing_value"><code>outgoing-value</code></a>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="set.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="delete"></a><code>delete: func</code></h4>
-<p>Delete the key-value pair associated with the key in the bucket.</p>
-<p>If the key does not exist in the bucket, it does nothing.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="delete.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="delete.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="delete.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="exists"></a><code>exists: func</code></h4>
-<p>Check if the key exists in the bucket.</p>
-<p>If the key exists in the bucket, it returns <code>Ok(true)</code>. If the key does
-not exist in the bucket, it returns <code>Ok(false)</code>.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="exists.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="exists.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="exists.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:keyvalue_atomic_0.1.0"></a>Import interface wasi:keyvalue/atomic@0.1.0</h2>
-<p>A keyvalue interface that provides atomic operations.</p>
-<p>Atomic operations are single, indivisible operations. When a fault causes
-an atomic operation to fail, it will appear to the invoker of the atomic
-operation that the action either completed successfully or did nothing
-at all.</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="bucket"></a><code>type bucket</code></h4>
-<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="key"></a>`type key`
-[`key`](#key)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="increment"></a><code>increment: func</code></h4>
-<p>Atomically increment the value associated with the key in the bucket by the
-given delta. It returns the new value.</p>
-<p>If the key does not exist in the bucket, it creates a new key-value pair
-with the value set to the given delta.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="increment.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="increment.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-<li><a name="increment.delta"></a><code>delta</code>: <code>u64</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="increment.0"></a> result&lt;<code>u64</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="compare_and_swap"></a><code>compare-and-swap: func</code></h4>
-<p>Compare-and-swap (CAS) atomically updates the value associated with the key
-in the bucket if the value matches the old value. This operation returns
-<code>Ok(true)</code> if the swap was successful, <code>Ok(false)</code> if the value did not match,</p>
-<p>A successful CAS operation means the current value matched the <code>old</code> value
-and was replaced with the <code>new</code> value.</p>
-<p>If the key does not exist in the bucket, it returns <code>Ok(false)</code>.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="compare_and_swap.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="compare_and_swap.key"></a><a href="#key"><code>key</code></a>: <a href="#key"><a href="#key"><code>key</code></a></a></li>
-<li><a name="compare_and_swap.old"></a><code>old</code>: <code>u64</code></li>
-<li><a name="compare_and_swap.new"></a><code>new</code>: <code>u64</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="compare_and_swap.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:keyvalue_eventual_batch_0.1.0"></a>Import interface wasi:keyvalue/eventual-batch@0.1.0</h2>
-<p>A keyvalue interface that provides eventually consistent batch operations.</p>
-<p>A batch operation is an operation that operates on multiple keys at once.</p>
-<p>Batch operations are useful for reducing network round-trip time. For example,
-if you want to get the values associated with 100 keys, you can either do 100 get
-operations or you can do 1 batch get operation. The batch operation is
-faster because it only needs to make 1 network call instead of 100.</p>
-<p>A batch operation does not guarantee atomicity, meaning that if the batch
-operation fails, some of the keys may have been modified and some may not.
-Transactional operations are being worked on and will be added in the future to
-provide atomicity.</p>
-<p>Data consistency in a key value store refers to the gaurantee that once a
-write operation completes, all subsequent read operations will return the
-value that was written.</p>
-<p>The level of consistency in batch operations is <strong>eventual consistency</strong>, the same
-with the readwrite interface. This interface does not guarantee strong consistency,
-meaning that if a write operation completes, subsequent read operations may not return
-the value that was written.</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="bucket"></a><code>type bucket</code></h4>
-<p><a href="#bucket"><a href="#bucket"><code>bucket</code></a></a></p>
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="key"></a>`type key`
-[`key`](#key)
-<p>
-#### <a name="incoming_value"></a>`type incoming-value`
-[`incoming-value`](#incoming_value)
-<p>
-#### <a name="outgoing_value"></a>`type outgoing-value`
-[`outgoing-value`](#outgoing_value)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="get_many"></a><code>get-many: func</code></h4>
-<p>Get the values associated with the keys in the bucket. It returns a list of
-incoming-value that can be consumed to get the value associated with the key.</p>
-<p>If any of the keys do not exist in the bucket, it returns a <code>none</code> value for
-that key in the list.</p>
-<p>Note that the key-value pairs are guaranteed to be returned in the same order</p>
-<p>MAY show an out-of-date value if there are concurrent writes to the bucket.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="get_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="get_many.keys"></a><a href="#keys"><code>keys</code></a>: list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="get_many.0"></a> result&lt;list&lt;option&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="keys"></a><code>keys: func</code></h4>
-<p>Get all the keys in the bucket. It returns a list of keys.</p>
-<p>Note that the keys are not guaranteed to be returned in any particular order.</p>
-<p>If the bucket is empty, it returns an empty list.</p>
-<p>MAY show an out-of-date list of keys if there are concurrent writes to the bucket.</p>
-<p>If any error occurs, it returns an <code>Err(error)</code>.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="keys.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="keys.0"></a> result&lt;list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="set_many"></a><code>set-many: func</code></h4>
-<p>Set the values associated with the keys in the bucket. If the key already
-exists in the bucket, it overwrites the value.</p>
-<p>Note that the key-value pairs are not guaranteed to be set in the order
-they are provided.</p>
-<p>If any of the keys do not exist in the bucket, it creates a new key-value pair.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>. When an error occurs, it
-does not rollback the key-value pairs that were already set. Thus, this batch operation
-does not guarantee atomicity, implying that some key-value pairs could be
-set while others might fail.</p>
-<p>Other concurrent operations may also be able to see the partial results.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="set_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="set_many.key_values"></a><code>key-values</code>: list&lt;(<a href="#key"><a href="#key"><code>key</code></a></a>, borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;)&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="set_many.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="delete_many"></a><code>delete-many: func</code></h4>
-<p>Delete the key-value pairs associated with the keys in the bucket.</p>
-<p>Note that the key-value pairs are not guaranteed to be deleted in the order
-they are provided.</p>
-<p>If any of the keys do not exist in the bucket, it skips the key.</p>
-<p>If any other error occurs, it returns an <code>Err(error)</code>. When an error occurs, it
-does not rollback the key-value pairs that were already deleted. Thus, this batch operation
-does not guarantee atomicity, implying that some key-value pairs could be
-deleted while others might fail.</p>
-<p>Other concurrent operations may also be able to see the partial results.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="delete_many.bucket"></a><a href="#bucket"><code>bucket</code></a>: borrow&lt;<a href="#bucket"><a href="#bucket"><code>bucket</code></a></a>&gt;</li>
-<li><a name="delete_many.keys"></a><a href="#keys"><code>keys</code></a>: list&lt;<a href="#key"><a href="#key"><code>key</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="delete_many.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:blobstore_types_0.1.0"></a>Import interface wasi:blobstore/types@0.1.0</h2>
-<p>Types used by blobstore</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="input_stream"></a><code>type input-stream</code></h4>
-<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
-<p>
-#### <a name="output_stream"></a>`type output-stream`
-[`output-stream`](#output_stream)
-<p>
-#### <a name="container_name"></a>`type container-name`
-`string`
-<p>name of a container, a collection of objects.
-The container name may be any valid UTF-8 string.
-<h4><a name="object_name"></a><code>type object-name</code></h4>
-<p><code>string</code></p>
-<p>name of an object within a container
-The object name may be any valid UTF-8 string.
-<h4><a name="timestamp"></a><code>type timestamp</code></h4>
-<p><code>u64</code></p>
-<p>TODO: define timestamp to include seconds since
-Unix epoch and nanoseconds
-https://github.com/WebAssembly/wasi-blob-store/issues/7
-<h4><a name="object_size"></a><code>type object-size</code></h4>
-<p><code>u64</code></p>
-<p>size of an object, in bytes
-<h4><a name="error"></a><code>type error</code></h4>
-<p><code>string</code></p>
-<p>
-#### <a name="container_metadata"></a>`record container-metadata`
-<p>information about a container</p>
+<h4><a name="datetime"></a><code>record datetime</code></h4>
+<p>A time and date in seconds plus nanoseconds.</p>
 <h5>Record Fields</h5>
 <ul>
-<li>
-<p><a name="container_metadata.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></p>
-<p>the container's name
-</li>
-<li>
-<p><a name="container_metadata.created_at"></a><code>created-at</code>: <a href="#timestamp"><a href="#timestamp"><code>timestamp</code></a></a></p>
-<p>date and time container was created
-</li>
+<li><a name="datetime.seconds"></a><code>seconds</code>: <code>u64</code></li>
+<li><a name="datetime.nanoseconds"></a><code>nanoseconds</code>: <code>u32</code></li>
 </ul>
-<h4><a name="object_metadata"></a><code>record object-metadata</code></h4>
-<p>information about an object</p>
-<h5>Record Fields</h5>
-<ul>
-<li>
-<p><a name="object_metadata.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></p>
-<p>the object's name
-</li>
-<li>
-<p><a name="object_metadata.container"></a><a href="#container"><code>container</code></a>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></p>
-<p>the object's parent container
-</li>
-<li>
-<p><a name="object_metadata.created_at"></a><code>created-at</code>: <a href="#timestamp"><a href="#timestamp"><code>timestamp</code></a></a></p>
-<p>date and time the object was created
-</li>
-<li>
-<p><a name="object_metadata.size"></a><code>size</code>: <a href="#object_size"><a href="#object_size"><code>object-size</code></a></a></p>
-<p>size of the object, in bytes
-</li>
-</ul>
-<h4><a name="object_id"></a><code>record object-id</code></h4>
-<p>identifier for an object that includes its container name</p>
-<h5>Record Fields</h5>
-<ul>
-<li><a name="object_id.container"></a><a href="#container"><code>container</code></a>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
-<li><a name="object_id.object"></a><code>object</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-</ul>
-<h4><a name="outgoing_value"></a><code>resource outgoing-value</code></h4>
-<p>A data is the data stored in a data blob. The value can be of any type
-that can be represented in a byte array. It provides a way to write the value
-to the output-stream defined in the <code>wasi-io</code> interface.
-Soon: switch to <code>resource value { ... }</code></p>
-<h4><a name="incoming_value"></a><code>resource incoming-value</code></h4>
-<p>A incoming-value is a wrapper around a value. It provides a way to read the value
-from the input-stream defined in the <code>wasi-io</code> interface.</p>
-<p>The incoming-value provides two ways to consume the value:</p>
-<ol>
-<li><code>incoming-value-consume-sync</code> consumes the value synchronously and returns the
-value as a list of bytes.</li>
-<li><code>incoming-value-consume-async</code> consumes the value asynchronously and returns the
-value as an input-stream.
-Soon: switch to <code>resource incoming-value { ... }</code></li>
-</ol>
-<h4><a name="incoming_value_async_body"></a><code>type incoming-value-async-body</code></h4>
-<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
-<p>
-#### <a name="incoming_value_sync_body"></a>`type incoming-value-sync-body`
-[`incoming-value-sync-body`](#incoming_value_sync_body)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="static_outgoing_value.new_outgoing_value"></a><code>[static]outgoing-value.new-outgoing-value: func</code></h4>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_outgoing_value.new_outgoing_value.0"></a> own&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_outgoing_value.outgoing_value_write_body"></a><code>[method]outgoing-value.outgoing-value-write-body: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body.self"></a><code>self</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_outgoing_value.outgoing_value_write_body.0"></a> result&lt;own&lt;<a href="#output_stream"><a href="#output_stream"><code>output-stream</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.incoming_value_consume_sync"></a><code>[method]incoming-value.incoming-value-consume-sync: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.incoming_value_consume_async"></a><code>[method]incoming-value.incoming-value-consume-async: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_incoming_value.size"></a><code>[method]incoming-value.size: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_incoming_value.size.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_incoming_value.size.0"></a> <code>u64</code></li>
-</ul>
-<h2><a name="wasi:blobstore_container_0.1.0"></a>Import interface wasi:blobstore/container@0.1.0</h2>
-<p>a Container is a collection of objects</p>
 <hr />
-<h3>Types</h3>
-<h4><a name="input_stream"></a><code>type input-stream</code></h4>
-<p><a href="#input_stream"><a href="#input_stream"><code>input-stream</code></a></a></p>
-<p>
-#### <a name="output_stream"></a>`type output-stream`
-[`output-stream`](#output_stream)
-<p>
-#### <a name="container_metadata"></a>`type container-metadata`
-[`container-metadata`](#container_metadata)
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="incoming_value"></a>`type incoming-value`
-[`incoming-value`](#incoming_value)
-<p>
-#### <a name="object_metadata"></a>`type object-metadata`
-[`object-metadata`](#object_metadata)
-<p>
-#### <a name="object_name"></a>`type object-name`
-[`object-name`](#object_name)
-<p>
-#### <a name="outgoing_value"></a>`type outgoing-value`
-[`outgoing-value`](#outgoing_value)
-<p>
-#### <a name="container"></a>`resource container`
-<p>this defines the <a href="#container"><code>container</code></a> resource</p>
-<h4><a name="stream_object_names"></a><code>resource stream-object-names</code></h4>
-<h2>this defines the <a href="#stream_object_names"><code>stream-object-names</code></a> resource which is a representation of stream<object-name></h2>
 <h3>Functions</h3>
-<h4><a name="method_container.name"></a><code>[method]container.name: func</code></h4>
-<p>returns container name</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.name.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-</ul>
+<h4><a name="now"></a><code>now: func</code></h4>
+<p>Read the current value of the clock.</p>
+<p>This clock is not monotonic, therefore calling this function repeatedly
+will not necessarily produce a sequence of non-decreasing values.</p>
+<p>The returned timestamps represent the number of seconds since
+1970-01-01T00:00:00Z, also known as <a href="https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xbd_chap04.html#tag_21_04_16">POSIX's Seconds Since the Epoch</a>,
+also known as <a href="https://en.wikipedia.org/wiki/Unix_time">Unix Time</a>.</p>
+<p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="method_container.name.0"></a> result&lt;<code>string</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
+<li><a name="now.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
 </ul>
-<h4><a name="method_container.info"></a><code>[method]container.info: func</code></h4>
-<p>returns container metadata</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.info.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-</ul>
+<h4><a name="resolution"></a><code>resolution: func</code></h4>
+<p>Query the resolution of the clock.</p>
+<p>The nanoseconds field of the output is always less than 1000000000.</p>
 <h5>Return values</h5>
 <ul>
-<li><a name="method_container.info.0"></a> result&lt;<a href="#container_metadata"><a href="#container_metadata"><code>container-metadata</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.get_data"></a><code>[method]container.get-data: func</code></h4>
-<p>retrieves an object or portion of an object, as a resource.
-Start and end offsets are inclusive.
-Once a data-blob resource has been created, the underlying bytes are held by the blobstore service for the lifetime
-of the data-blob resource, even if the object they came from is later deleted.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.get_data.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.get_data.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-<li><a name="method_container.get_data.start"></a><code>start</code>: <code>u64</code></li>
-<li><a name="method_container.get_data.end"></a><code>end</code>: <code>u64</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.get_data.0"></a> result&lt;own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.write_data"></a><code>[method]container.write-data: func</code></h4>
-<p>creates or replaces an object with the data blob.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.write_data.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.write_data.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-<li><a name="method_container.write_data.data"></a><code>data</code>: borrow&lt;<a href="#outgoing_value"><a href="#outgoing_value"><code>outgoing-value</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.write_data.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.list_objects"></a><code>[method]container.list-objects: func</code></h4>
-<p>returns list of objects in the container. Order is undefined.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.list_objects.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.list_objects.0"></a> result&lt;own&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.delete_object"></a><code>[method]container.delete-object: func</code></h4>
-<p>deletes object.
-does not return error if object did not exist.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.delete_object.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.delete_object.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.delete_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.delete_objects"></a><code>[method]container.delete-objects: func</code></h4>
-<p>deletes multiple objects in the container</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.delete_objects.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.delete_objects.names"></a><code>names</code>: list&lt;<a href="#object_name"><a href="#object_name"><code>object-name</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.delete_objects.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.has_object"></a><code>[method]container.has-object: func</code></h4>
-<p>returns true if the object exists in this container</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.has_object.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.has_object.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.has_object.0"></a> result&lt;<code>bool</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.object_info"></a><code>[method]container.object-info: func</code></h4>
-<p>returns metadata for the object</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.object_info.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-<li><a name="method_container.object_info.name"></a><code>name</code>: <a href="#object_name"><a href="#object_name"><code>object-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.object_info.0"></a> result&lt;<a href="#object_metadata"><a href="#object_metadata"><code>object-metadata</code></a></a>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_container.clear"></a><code>[method]container.clear: func</code></h4>
-<p>removes all objects within the container, leaving the container empty.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_container.clear.self"></a><code>self</code>: borrow&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_container.clear.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_stream_object_names.read_stream_object_names"></a><code>[method]stream-object-names.read-stream-object-names: func</code></h4>
-<p>reads the next number of objects from the stream</p>
-<p>This function returns the list of objects read, and a boolean indicating if the end of the stream was reached.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_stream_object_names.read_stream_object_names.self"></a><code>self</code>: borrow&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;</li>
-<li><a name="method_stream_object_names.read_stream_object_names.len"></a><code>len</code>: <code>u64</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_stream_object_names.read_stream_object_names.0"></a> result&lt;(list&lt;<a href="#object_name"><a href="#object_name"><code>object-name</code></a></a>&gt;, <code>bool</code>), <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="method_stream_object_names.skip_stream_object_names"></a><code>[method]stream-object-names.skip-stream-object-names: func</code></h4>
-<p>skip the next number of objects in the stream</p>
-<p>This function returns the number of objects skipped, and a boolean indicating if the end of the stream was reached.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="method_stream_object_names.skip_stream_object_names.self"></a><code>self</code>: borrow&lt;<a href="#stream_object_names"><a href="#stream_object_names"><code>stream-object-names</code></a></a>&gt;</li>
-<li><a name="method_stream_object_names.skip_stream_object_names.num"></a><code>num</code>: <code>u64</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_stream_object_names.skip_stream_object_names.0"></a> result&lt;(<code>u64</code>, <code>bool</code>), <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h2><a name="wasi:blobstore_blobstore_0.1.0"></a>Import interface wasi:blobstore/blobstore@0.1.0</h2>
-<p>wasi-cloud Blobstore service definition</p>
-<hr />
-<h3>Types</h3>
-<h4><a name="container"></a><code>type container</code></h4>
-<p><a href="#container"><a href="#container"><code>container</code></a></a></p>
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="container_name"></a>`type container-name`
-[`container-name`](#container_name)
-<p>
-#### <a name="object_id"></a>`type object-id`
-[`object-id`](#object_id)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="create_container"></a><code>create-container: func</code></h4>
-<p>creates a new empty container</p>
-<h5>Params</h5>
-<ul>
-<li><a name="create_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="create_container.0"></a> result&lt;own&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="get_container"></a><code>get-container: func</code></h4>
-<p>retrieves a container by name</p>
-<h5>Params</h5>
-<ul>
-<li><a name="get_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="get_container.0"></a> result&lt;own&lt;<a href="#container"><a href="#container"><code>container</code></a></a>&gt;, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="delete_container"></a><code>delete-container: func</code></h4>
-<p>deletes a container and all objects within it</p>
-<h5>Params</h5>
-<ul>
-<li><a name="delete_container.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="delete_container.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="container_exists"></a><code>container-exists: func</code></h4>
-<p>returns true if the container exists</p>
-<h5>Params</h5>
-<ul>
-<li><a name="container_exists.name"></a><code>name</code>: <a href="#container_name"><a href="#container_name"><code>container-name</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="container_exists.0"></a> result&lt;<code>bool</code>, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="copy_object"></a><code>copy-object: func</code></h4>
-<p>copies (duplicates) an object, to the same or a different container.
-returns an error if the target container does not exist.
-overwrites destination object if it already existed.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="copy_object.src"></a><code>src</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
-<li><a name="copy_object.dest"></a><code>dest</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="copy_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="move_object"></a><code>move-object: func</code></h4>
-<p>moves or renames an object, to the same or a different container
-returns an error if the destination container does not exist.
-overwrites destination object if it already existed.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="move_object.src"></a><code>src</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
-<li><a name="move_object.dest"></a><code>dest</code>: <a href="#object_id"><a href="#object_id"><code>object-id</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="move_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h2><a name="wasi:sql_types_0.1.0"></a>Import interface wasi:sql/types@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="data_type"></a><code>variant data-type</code></h4>
-<p>common data types</p>
-<h5>Variant Cases</h5>
-<ul>
-<li><a name="data_type.int32"></a><code>int32</code>: <code>s32</code></li>
-<li><a name="data_type.int64"></a><code>int64</code>: <code>s64</code></li>
-<li><a name="data_type.uint32"></a><code>uint32</code>: <code>u32</code></li>
-<li><a name="data_type.uint64"></a><code>uint64</code>: <code>u64</code></li>
-<li><a name="data_type.float"></a><code>float</code>: <code>float64</code></li>
-<li><a name="data_type.double"></a><code>double</code>: <code>float64</code></li>
-<li><a name="data_type.str"></a><code>str</code>: <code>string</code></li>
-<li><a name="data_type.boolean"></a><code>boolean</code>: <code>bool</code></li>
-<li><a name="data_type.date"></a><code>date</code>: <code>string</code></li>
-<li><a name="data_type.time"></a><code>time</code>: <code>string</code></li>
-<li><a name="data_type.timestamp"></a><a href="#timestamp"><code>timestamp</code></a>: <code>string</code></li>
-<li><a name="data_type.binary"></a><code>binary</code>: list&lt;<code>u8</code>&gt;</li>
-<li><a name="data_type.null"></a><code>null</code></li>
-</ul>
-<h4><a name="row"></a><code>record row</code></h4>
-<p>one single row item</p>
-<h5>Record Fields</h5>
-<ul>
-<li><a name="row.field_name"></a><code>field-name</code>: <code>string</code></li>
-<li><a name="row.value"></a><code>value</code>: <a href="#data_type"><a href="#data_type"><code>data-type</code></a></a></li>
-</ul>
-<h4><a name="statement"></a><code>resource statement</code></h4>
-<p>allows parameterized queries
-e.g., prepare(&quot;SELECT * FROM users WHERE name = ? AND age = ?&quot;, vec![&quot;John Doe&quot;, &quot;32&quot;])</p>
-<h4><a name="error"></a><code>resource error</code></h4>
-<p>An error resource type.
-Currently, this provides only one function to return a string representation
-of the error. In the future, this will be extended to provide more information.</p>
-<h4><a name="connection"></a><code>resource connection</code></h4>
-<h2>A connection to a sql store.</h2>
-<h3>Functions</h3>
-<h4><a name="static_statement.prepare"></a><code>[static]statement.prepare: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="static_statement.prepare.query"></a><a href="#query"><code>query</code></a>: <code>string</code></li>
-<li><a name="static_statement.prepare.params"></a><code>params</code>: list&lt;<code>string</code>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_statement.prepare.0"></a> result&lt;own&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="method_error.trace"></a><code>[method]error.trace: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="method_error.trace.self"></a><code>self</code>: borrow&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="method_error.trace.0"></a> <code>string</code></li>
-</ul>
-<h4><a name="static_connection.open"></a><code>[static]connection.open: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="static_connection.open.name"></a><code>name</code>: <code>string</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_connection.open.0"></a> result&lt;own&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:sql_readwrite_0.1.0"></a>Import interface wasi:sql/readwrite@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="statement"></a><code>type statement</code></h4>
-<p><a href="#statement"><a href="#statement"><code>statement</code></a></a></p>
-<p>
-#### <a name="row"></a>`type row`
-[`row`](#row)
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="connection"></a>`type connection`
-[`connection`](#connection)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="query"></a><code>query: func</code></h4>
-<p>query is optimized for querying data, and
-implementors can make use of that fact to optimize
-the performance of query execution (e.g., using
-indexes).</p>
-<h5>Params</h5>
-<ul>
-<li><a name="query.c"></a><code>c</code>: borrow&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;</li>
-<li><a name="query.q"></a><code>q</code>: borrow&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="query.0"></a> result&lt;list&lt;<a href="#row"><a href="#row"><code>row</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="exec"></a><code>exec: func</code></h4>
-<p>exec is for modifying data in the database.</p>
-<h5>Params</h5>
-<ul>
-<li><a name="exec.c"></a><code>c</code>: borrow&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;</li>
-<li><a name="exec.q"></a><code>q</code>: borrow&lt;<a href="#statement"><a href="#statement"><code>statement</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="exec.0"></a> result&lt;<code>u32</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+<li><a name="resolution.0"></a> <a href="#datetime"><a href="#datetime"><code>datetime</code></a></a></li>
 </ul>
