@@ -1,5 +1,5 @@
-[blob-store]
-url = "https://github.com/WebAssembly/wasi-blob-store/archive/main.tar.gz"
+[blobstore]
+url = "https://github.com/WebAssembly/wasi-blobstore/archive/main.tar.gz"
 sha256 = "f1829eeab5bf721b5e922b894de30d91ac6badeb1b64d6ce239353fe39c21556"
 sha512 = "e34daf3ea4fbc3d9b7a6ba4399fdbf384254b309f0eacf39a7b685ef7e77ac0e26934f911c713089a9d19a2b6bd93f6eb95ca09239dc18becba7bba3fb794fd7"
 

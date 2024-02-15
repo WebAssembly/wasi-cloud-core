@@ -1,5 +1,5 @@
 keyvalue = "https://github.com/WebAssembly/wasi-keyvalue/archive/main.tar.gz"
-blob-store = "https://github.com/WebAssembly/wasi-blob-store/archive/main.tar.gz"
+blobstore = "https://github.com/WebAssembly/wasi-blobstore/archive/main.tar.gz"
 http = "https://github.com/WebAssembly/wasi-http/archive/main.tar.gz"
 messaging = "https://github.com/WebAssembly/wasi-messaging/archive/main.tar.gz"
 sql = "https://github.com/WebAssembly/wasi-sql/archive/main.tar.gz"
