@@ -218,16 +218,23 @@ the platform / runtime.</p>
 <hr />
 <h3>Types</h3>
 <h4><a name="config_error"></a><code>variant config-error</code></h4>
-<p>Errors that can be returned from config sources</p>
+<p>An error type that encapsulates the different errors that can occur fetching config</p>
 <h5>Variant Cases</h5>
 <ul>
 <li>
 <p><a name="config_error.upstream"></a><code>upstream</code>: <code>string</code></p>
-<p>An error occurred on the config source when fetching data
+<p>This indicates an error from an "upstream" config source.
+As this could be almost _anything_ (such as Vault, Kubernetes ConfigMaps, KeyValue buckets, etc),
+the error message is a string.
 </li>
 <li>
 <p><a name="config_error.io"></a><code>io</code>: <code>string</code></p>
-<p>I/O or connection failure when fetching data
+<p>This indicates an error from an I/O operation.
+As this could be almost _anything_ (such as a file read, network connection, etc),
+the error message is a string.
+Depending on how this ends up being consumed,
+we may consider moving this to use the `wasi:io/error` type instead.
+For simplicity right now in supporting multiple implementations, it is being left as a string.
 </li>
 </ul>
 <hr />
@@ -793,27 +800,27 @@ If any other error occurs, it returns an <code>Err(error)</code>.</p>
 <ul>
 <li><a name="method_outgoing_value.outgoing_value_write_body_sync.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h4><a name="method_incoming_value.incoming_value_consume_sync"></a><code>[method]incoming-value.incoming-value-consume-sync: func</code></h4>
+<h4><a name="static_incoming_value.incoming_value_consume_sync"></a><code>[static]incoming-value.incoming-value-consume-sync: func</code></h4>
 <p>Consumes the value synchronously and returns the value as a list of bytes.
 If any other error occurs, it returns an <code>Err(error)</code>.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+<li><a name="static_incoming_value.incoming_value_consume_sync.this"></a><code>this</code>: own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="method_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+<li><a name="static_incoming_value.incoming_value_consume_sync.0"></a> result&lt;<a href="#incoming_value_sync_body"><a href="#incoming_value_sync_body"><code>incoming-value-sync-body</code></a></a>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h4><a name="method_incoming_value.incoming_value_consume_async"></a><code>[method]incoming-value.incoming-value-consume-async: func</code></h4>
+<h4><a name="static_incoming_value.incoming_value_consume_async"></a><code>[static]incoming-value.incoming-value-consume-async: func</code></h4>
 <p>Consumes the value asynchronously and returns the value as an <a href="#input_stream"><code>input-stream</code></a>.
 If any other error occurs, it returns an <code>Err(error)</code>.</p>
 <h5>Params</h5>
 <ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.self"></a><code>self</code>: borrow&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
+<li><a name="static_incoming_value.incoming_value_consume_async.this"></a><code>this</code>: own&lt;<a href="#incoming_value"><a href="#incoming_value"><code>incoming-value</code></a></a>&gt;</li>
 </ul>
 <h5>Return values</h5>
 <ul>
-<li><a name="method_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+<li><a name="static_incoming_value.incoming_value_consume_async.0"></a> result&lt;own&lt;<a href="#incoming_value_async_body"><a href="#incoming_value_async_body"><code>incoming-value-async-body</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
 <h4><a name="method_incoming_value.incoming_value_size"></a><code>[method]incoming-value.incoming-value-size: func</code></h4>
 <p>The size of the value in bytes.

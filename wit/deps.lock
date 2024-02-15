@@ -28,8 +28,8 @@ sha512 = "49184a1b0945a889abd52d25271172ed3dc2db6968fcdddb1bab7ee0081f4a3eeee097
 
 [keyvalue]
 url = "https://github.com/WebAssembly/wasi-keyvalue/archive/main.tar.gz"
-sha256 = "71b13c24d483e7f055aa8ebf87932abe931ff490764ec2a3f1fcc63c35bfb894"
-sha512 = "c8ae7216f58923aa6bf9e3da9c17320bff2b5497d29dff0f70845efdfcff6b85cf6b8eb57b43b02f208a17531dfb5c972ae952d20f7f5fe68abdb71fb91f9ea4"
+sha256 = "4ee1524f28b599c92ff9d6fae2a265d44e4e2ab41e9ac0dc3cbff1111008a4ce"
+sha512 = "bf6a6628978e56e94307ef8a67546ed381343e07992419084400ee64d351c3eedaac6cf0d9889c96f22d32076b1c070d1547161787c218fcee4ff8ae08535a13"
 
 [messaging]
 url = "https://github.com/WebAssembly/wasi-messaging/archive/main.tar.gz"
@@ -42,8 +42,8 @@ sha512 = "964c4e8925a53078e4d94ba907b54f89a0b7e154f46823a505391471466c17f53c8692
 
 [runtime-config]
 url = "https://github.com/WebAssembly/wasi-runtime-config/archive/main.tar.gz"
-sha256 = "b9af3495a52a13274f486c978abb712ecc15736b7d8f7cc8dc4241b629d8fe6c"
-sha512 = "1addf3e11969effd833fddc5f904c9785a2de676fb2c85a2d47a1239c0ef9a366f17a8478062d63a04f7fc27939118cc1aed13dfd8e471cb3a80f1b0f3396afb"
+sha256 = "8407060a0f7df4c24f41d20167f672388a58c775be0e91a8614ed700c12617f5"
+sha512 = "04c39888fca66b0ee7f180047b6f1d2548dd16782d32684ddeb7e231660211fde9720118640269ec96ab3b2be7934dfe35cce70c6fa4d3b6e8e5030bd09fbfdb"
 
 [sockets]
 sha256 = "622bd28bbeb43736375dc02bd003fd3a016ff8ee91e14bab488325c6b38bf966"

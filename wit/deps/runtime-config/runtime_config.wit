@@ -1,16 +1,25 @@
-package wasi:config@0.1.0;
-
 interface runtime {
-    /// Errors that can be returned from config sources
+    /// An error type that encapsulates the different errors that can occur fetching config
     variant config-error {
-        /// An error occurred on the config source when fetching data
+        /// This indicates an error from an "upstream" config source. 
+        /// As this could be almost _anything_ (such as Vault, Kubernetes ConfigMaps, KeyValue buckets, etc), 
+        /// the error message is a string.
         upstream(string),
-        /// I/O or connection failure when fetching data
+        /// This indicates an error from an I/O operation. 
+        /// As this could be almost _anything_ (such as a file read, network connection, etc), 
+        /// the error message is a string. 
+        /// Depending on how this ends up being consumed, 
+        /// we may consider moving this to use the `wasi:io/error` type instead. 
+        /// For simplicity right now in supporting multiple implementations, it is being left as a string.
         io(string),
     }
 
     /// Gets a single opaque config value set at the given key if it exists
-    get: func(key: string) -> result<option<list<u8>>, config-error>;
+    get: func(
+        /// A string key to fetch
+        key: string
+    ) -> result<option<list<u8>>, config-error>;
+
     /// Gets a list of all set config data
     get-all: func() -> result<list<tuple<string, list<u8>>>, config-error>;
 }
