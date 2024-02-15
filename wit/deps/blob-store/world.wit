@@ -1,3 +1,0 @@
-default world blob-store {
-	import blobstore: pkg.blobstore
-}

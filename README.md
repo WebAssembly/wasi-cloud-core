@@ -31,7 +31,6 @@ A proposed [WebAssembly System Interface](https://github.com/WebAssembly/WASI) A
 - [wasi-messaging](https://github.com/WebAssembly/wasi-messaging)
 - [wasi-http](https://github.com/WebAssembly/wasi-http)
 - [wasi-runtime-config](https://github.com/WebAssembly/wasi-runtime-config)
-- [wasi-distributed-lock-service](https://github.com/WebAssembly/wasi-distributed-lock-service)
 - [wasi-sql](https://github.com/WebAssembly/wasi-sql)
 - [wasi-blob-store](https://github.com/WebAssembly/wasi-blob-store)
 

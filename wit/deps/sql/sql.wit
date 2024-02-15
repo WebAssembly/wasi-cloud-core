@@ -1,3 +1,5 @@
-default world sql {
-	import readwrite: pkg.readwrite
+package wasi:sql@0.1.0;
+
+world imports {
+	import readwrite;
 }

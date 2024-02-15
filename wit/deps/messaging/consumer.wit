@@ -1,10 +1,27 @@
-/// An interface for a generic consumer.
-default interface consumer {
-	use pkg.types.{broker, channel, subscription-token, error}
+interface consumer {
+    // {client, message, channel, error, guest-configuration}
+    use messaging-types.{client, message, channel, error, guest-configuration};
 
-	/// Subscribes to a channel in a broker.
-	subscribe: func(b: broker, c: channel) -> result<subscription-token, error>
+    /// Blocking receive for t-milliseconds with ephemeral subscription – if no message is received, returns None
+    subscribe-try-receive: func(c: client, ch: channel, t-milliseconds: u32) -> result<option<list<message>>, error>;
 
-	/// Unsubscribes from a channel via subscription token.
-	unsubscribe: func(b: broker, st: subscription-token) -> result<_, error>
+    /// Blocking receive until message with ephemeral subscription
+    subscribe-receive: func(c: client, ch: channel) -> result<list<message>, error>;
+
+    /// 'Fit-all' type function for updating a guest's configuration – this could be useful for:
+    ///     - unsubscribing from a channel,
+    ///     - checkpointing,
+    ///     - etc..
+    update-guest-configuration: func(gc: guest-configuration) -> result<_, error>;
+
+    /// A message can exist under several statuses:
+    /// (1) available: the message is ready to be read,
+    /// (2) acquired: the message has been sent to a consumer (but still exists in the queue),
+    /// (3) accepted (result of complete-message): the message has been received and ACK-ed by a consumer and can be safely removed from the queue,
+    /// (4) rejected (result of abandon-message): the message has been received and NACK-ed by a consumer, at which point it can be:
+    ///         - deleted,
+    ///         - sent to a dead-letter queue, or
+    ///         - kept in the queue for further processing.
+    complete-message: func(m: message) -> result<_, error>;
+    abandon-message: func(m: message) -> result<_, error>;
 }
