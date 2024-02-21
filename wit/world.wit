@@ -11,13 +11,13 @@ world imports {
     include wasi:blobstore/imports@0.2.0-draft;
 
     /// The capability to send and receive messages to message broker proiders
-    import wasi:messaging/imports@0.2.0-draft;
+    include wasi:messaging/imports@0.2.0-draft;
 
     /// The capability to interact with SQL databases
     include wasi:sql/imports@0.2.0-draft;
 
     /// The capability to interact with runtime configuration providers
-    import wasi:config/runtime@0.2.0-draft;
+    include wasi:config/imports@0.2.0-draft;
 
     /// The capability to send HTTP requests (e.g. via `fetch()`)
     include wasi:http/imports@0.2.0;

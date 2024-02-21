@@ -1,4 +1,4 @@
-package wasi:sql@0.1.0;
+package wasi:sql@0.2.0-draft;
 
 world imports {
 	import readwrite;

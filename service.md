@@ -6,23 +6,23 @@ added to the component model and WIT specification.</p>
 <ul>
 <li>Imports:
 <ul>
-<li>interface <a href="#wasi:messaging_messaging_types_0.1.0"><code>wasi:messaging/messaging-types@0.1.0</code></a></li>
-<li>interface <a href="#wasi:messaging_producer_0.1.0"><code>wasi:messaging/producer@0.1.0</code></a></li>
-<li>interface <a href="#wasi:messaging_consumer_0.1.0"><code>wasi:messaging/consumer@0.1.0</code></a></li>
-<li>interface <a href="#wasi:config_runtime_0.1.0"><code>wasi:config/runtime@0.1.0</code></a></li>
 <li>interface <a href="#wasi:io_error_0.2.0"><code>wasi:io/error@0.2.0</code></a></li>
 <li>interface <a href="#wasi:io_poll_0.2.0"><code>wasi:io/poll@0.2.0</code></a></li>
 <li>interface <a href="#wasi:io_streams_0.2.0"><code>wasi:io/streams@0.2.0</code></a></li>
-<li>interface <a href="#wasi:keyvalue_wasi_keyvalue_error_0.1.0"><code>wasi:keyvalue/wasi-keyvalue-error@0.1.0</code></a></li>
-<li>interface <a href="#wasi:keyvalue_types_0.1.0"><code>wasi:keyvalue/types@0.1.0</code></a></li>
-<li>interface <a href="#wasi:keyvalue_eventual_0.1.0"><code>wasi:keyvalue/eventual@0.1.0</code></a></li>
-<li>interface <a href="#wasi:keyvalue_atomic_0.1.0"><code>wasi:keyvalue/atomic@0.1.0</code></a></li>
-<li>interface <a href="#wasi:keyvalue_eventual_batch_0.1.0"><code>wasi:keyvalue/eventual-batch@0.1.0</code></a></li>
-<li>interface <a href="#wasi:blobstore_types_0.1.0"><code>wasi:blobstore/types@0.1.0</code></a></li>
-<li>interface <a href="#wasi:blobstore_container_0.1.0"><code>wasi:blobstore/container@0.1.0</code></a></li>
-<li>interface <a href="#wasi:blobstore_blobstore_0.1.0"><code>wasi:blobstore/blobstore@0.1.0</code></a></li>
-<li>interface <a href="#wasi:sql_types_0.1.0"><code>wasi:sql/types@0.1.0</code></a></li>
-<li>interface <a href="#wasi:sql_readwrite_0.1.0"><code>wasi:sql/readwrite@0.1.0</code></a></li>
+<li>interface <a href="#wasi:keyvalue_wasi_keyvalue_error_0.2.0_draft"><code>wasi:keyvalue/wasi-keyvalue-error@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:keyvalue_types_0.2.0_draft"><code>wasi:keyvalue/types@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:keyvalue_eventual_0.2.0_draft"><code>wasi:keyvalue/eventual@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:keyvalue_atomic_0.2.0_draft"><code>wasi:keyvalue/atomic@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:keyvalue_eventual_batch_0.2.0_draft"><code>wasi:keyvalue/eventual-batch@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:blobstore_types_0.2.0_draft"><code>wasi:blobstore/types@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:blobstore_container_0.2.0_draft"><code>wasi:blobstore/container@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:blobstore_blobstore_0.2.0_draft"><code>wasi:blobstore/blobstore@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:messaging_messaging_types_0.2.0_draft"><code>wasi:messaging/messaging-types@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:messaging_producer_0.2.0_draft"><code>wasi:messaging/producer@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:messaging_consumer_0.2.0_draft"><code>wasi:messaging/consumer@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:sql_types_0.2.0_draft"><code>wasi:sql/types@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:sql_readwrite_0.2.0_draft"><code>wasi:sql/readwrite@0.2.0-draft</code></a></li>
+<li>interface <a href="#wasi:config_runtime_0.2.0_draft"><code>wasi:config/runtime@0.2.0-draft</code></a></li>
 <li>interface <a href="#wasi:random_random_0.2.0"><code>wasi:random/random@0.2.0</code></a></li>
 <li>interface <a href="#wasi:cli_stdout_0.2.0"><code>wasi:cli/stdout@0.2.0</code></a></li>
 <li>interface <a href="#wasi:cli_stderr_0.2.0"><code>wasi:cli/stderr@0.2.0</code></a></li>
@@ -36,224 +36,9 @@ added to the component model and WIT specification.</p>
 <li>Exports:
 <ul>
 <li>interface <a href="#wasi:http_incoming_handler_0.2.0"><code>wasi:http/incoming-handler@0.2.0</code></a></li>
-<li>interface <a href="#wasi:messaging_messaging_guest_0.1.0"><code>wasi:messaging/messaging-guest@0.1.0</code></a></li>
+<li>interface <a href="#wasi:messaging_messaging_guest_0.2.0_draft"><code>wasi:messaging/messaging-guest@0.2.0-draft</code></a></li>
 </ul>
 </li>
-</ul>
-<h2><a name="wasi:messaging_messaging_types_0.1.0"></a>Import interface wasi:messaging/messaging-types@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="client"></a><code>resource client</code></h4>
-<p>A connection to a message-exchange service (e.g., buffer, broker, etc.).</p>
-<h4><a name="error"></a><code>resource error</code></h4>
-<p>TODO(danbugs): This should be eventually extracted as an underlying type for other wasi-cloud-core interfaces.</p>
-<h4><a name="channel"></a><code>type channel</code></h4>
-<p><code>string</code></p>
-<p>There are two types of channels:
-- publish-subscribe channel, which is a broadcast channel, and
-- point-to-point channel, which is a unicast channel.
-<p>The interface doesn't highlight this difference in the type itself as that's uniquely a consumer issue.</p>
-<h4><a name="guest_configuration"></a><code>record guest-configuration</code></h4>
-<p>Configuration includes a required list of channels the guest is subscribing to, and an optional list of extensions key-value pairs
-(e.g., partitions/offsets to read from in Kafka/EventHubs, QoS etc.).</p>
-<h5>Record Fields</h5>
-<ul>
-<li><a name="guest_configuration.channels"></a><code>channels</code>: list&lt;<a href="#channel"><a href="#channel"><code>channel</code></a></a>&gt;</li>
-<li><a name="guest_configuration.extensions"></a><code>extensions</code>: option&lt;list&lt;(<code>string</code>, <code>string</code>)&gt;&gt;</li>
-</ul>
-<h4><a name="format_spec"></a><code>enum format-spec</code></h4>
-<p>Format specification for messages</p>
-<ul>
-<li>more info: https://github.com/clemensv/spec/blob/registry-extensions/registry/spec.md#message-formats</li>
-<li>message metadata can further decorate w/ things like format version, and so on.</li>
-</ul>
-<h5>Enum Cases</h5>
-<ul>
-<li><a name="format_spec.cloudevents"></a><code>cloudevents</code></li>
-<li><a name="format_spec.http"></a><code>http</code></li>
-<li><a name="format_spec.amqp"></a><code>amqp</code></li>
-<li><a name="format_spec.mqtt"></a><code>mqtt</code></li>
-<li><a name="format_spec.kafka"></a><code>kafka</code></li>
-<li><a name="format_spec.raw"></a><code>raw</code></li>
-</ul>
-<h4><a name="message"></a><code>record message</code></h4>
-<p>A message with a binary payload, a format specification, and decorative metadata.</p>
-<h5>Record Fields</h5>
-<ul>
-<li><a name="message.data"></a><code>data</code>: list&lt;<code>u8</code>&gt;</li>
-<li><a name="message.format"></a><code>format</code>: <a href="#format_spec"><a href="#format_spec"><code>format-spec</code></a></a></li>
-<li><a name="message.metadata"></a><code>metadata</code>: option&lt;list&lt;(<code>string</code>, <code>string</code>)&gt;&gt;</li>
-</ul>
-<hr />
-<h3>Functions</h3>
-<h4><a name="static_client.connect"></a><code>[static]client.connect: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="static_client.connect.name"></a><code>name</code>: <code>string</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_client.connect.0"></a> result&lt;own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="static_error.trace"></a><code>[static]error.trace: func</code></h4>
-<h5>Return values</h5>
-<ul>
-<li><a name="static_error.trace.0"></a> <code>string</code></li>
-</ul>
-<h2><a name="wasi:messaging_producer_0.1.0"></a>Import interface wasi:messaging/producer@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="client"></a><code>type client</code></h4>
-<p><a href="#client"><a href="#client"><code>client</code></a></a></p>
-<p>
-#### <a name="channel"></a>`type channel`
-[`channel`](#channel)
-<p>
-#### <a name="message"></a>`type message`
-[`message`](#message)
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="send"></a><code>send: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="send.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
-<li><a name="send.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
-<li><a name="send.m"></a><code>m</code>: list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;</li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="send.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:messaging_consumer_0.1.0"></a>Import interface wasi:messaging/consumer@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="client"></a><code>type client</code></h4>
-<p><a href="#client"><a href="#client"><code>client</code></a></a></p>
-<p>
-#### <a name="message"></a>`type message`
-[`message`](#message)
-<p>
-#### <a name="channel"></a>`type channel`
-[`channel`](#channel)
-<p>
-#### <a name="error"></a>`type error`
-[`error`](#error)
-<p>
-#### <a name="guest_configuration"></a>`type guest-configuration`
-[`guest-configuration`](#guest_configuration)
-<p>
-----
-<h3>Functions</h3>
-<h4><a name="subscribe_try_receive"></a><code>subscribe-try-receive: func</code></h4>
-<p>Blocking receive for t-milliseconds with ephemeral subscription – if no message is received, returns None</p>
-<h5>Params</h5>
-<ul>
-<li><a name="subscribe_try_receive.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
-<li><a name="subscribe_try_receive.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
-<li><a name="subscribe_try_receive.t_milliseconds"></a><code>t-milliseconds</code>: <code>u32</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="subscribe_try_receive.0"></a> result&lt;option&lt;list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="subscribe_receive"></a><code>subscribe-receive: func</code></h4>
-<p>Blocking receive until message with ephemeral subscription</p>
-<h5>Params</h5>
-<ul>
-<li><a name="subscribe_receive.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
-<li><a name="subscribe_receive.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="subscribe_receive.0"></a> result&lt;list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="update_guest_configuration"></a><code>update-guest-configuration: func</code></h4>
-<p>'Fit-all' type function for updating a guest's configuration – this could be useful for:</p>
-<ul>
-<li>unsubscribing from a channel,</li>
-<li>checkpointing,</li>
-<li>etc..</li>
-</ul>
-<h5>Params</h5>
-<ul>
-<li><a name="update_guest_configuration.gc"></a><code>gc</code>: <a href="#guest_configuration"><a href="#guest_configuration"><code>guest-configuration</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="update_guest_configuration.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="complete_message"></a><code>complete-message: func</code></h4>
-<p>A message can exist under several statuses:
-(1) available: the message is ready to be read,
-(2) acquired: the message has been sent to a consumer (but still exists in the queue),
-(3) accepted (result of complete-message): the message has been received and ACK-ed by a consumer and can be safely removed from the queue,
-(4) rejected (result of abandon-message): the message has been received and NACK-ed by a consumer, at which point it can be:</p>
-<ul>
-<li>deleted,</li>
-<li>sent to a dead-letter queue, or</li>
-<li>kept in the queue for further processing.</li>
-</ul>
-<h5>Params</h5>
-<ul>
-<li><a name="complete_message.m"></a><code>m</code>: <a href="#message"><a href="#message"><code>message</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="complete_message.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h4><a name="abandon_message"></a><code>abandon-message: func</code></h4>
-<h5>Params</h5>
-<ul>
-<li><a name="abandon_message.m"></a><code>m</code>: <a href="#message"><a href="#message"><code>message</code></a></a></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="abandon_message.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
-</ul>
-<h2><a name="wasi:config_runtime_0.1.0"></a>Import interface wasi:config/runtime@0.1.0</h2>
-<hr />
-<h3>Types</h3>
-<h4><a name="config_error"></a><code>variant config-error</code></h4>
-<p>An error type that encapsulates the different errors that can occur fetching config</p>
-<h5>Variant Cases</h5>
-<ul>
-<li>
-<p><a name="config_error.upstream"></a><code>upstream</code>: <code>string</code></p>
-<p>This indicates an error from an "upstream" config source.
-As this could be almost _anything_ (such as Vault, Kubernetes ConfigMaps, KeyValue buckets, etc),
-the error message is a string.
-</li>
-<li>
-<p><a name="config_error.io"></a><code>io</code>: <code>string</code></p>
-<p>This indicates an error from an I/O operation.
-As this could be almost _anything_ (such as a file read, network connection, etc),
-the error message is a string.
-Depending on how this ends up being consumed,
-we may consider moving this to use the `wasi:io/error` type instead.
-For simplicity right now in supporting multiple implementations, it is being left as a string.
-</li>
-</ul>
-<hr />
-<h3>Functions</h3>
-<h4><a name="get"></a><code>get: func</code></h4>
-<p>Gets a single opaque config value set at the given key if it exists</p>
-<h5>Params</h5>
-<ul>
-<li><a name="get.key"></a><a href="#key"><code>key</code></a>: <code>string</code></li>
-</ul>
-<h5>Return values</h5>
-<ul>
-<li><a name="get.0"></a> result&lt;option&lt;list&lt;<code>u8</code>&gt;&gt;, <a href="#config_error"><a href="#config_error"><code>config-error</code></a></a>&gt;</li>
-</ul>
-<h4><a name="get_all"></a><code>get-all: func</code></h4>
-<p>Gets a list of all set config data</p>
-<h5>Return values</h5>
-<ul>
-<li><a name="get_all.0"></a> result&lt;list&lt;(<code>string</code>, list&lt;<code>u8</code>&gt;)&gt;, <a href="#config_error"><a href="#config_error"><code>config-error</code></a></a>&gt;</li>
 </ul>
 <h2><a name="wasi:io_error_0.2.0"></a>Import interface wasi:io/error@0.2.0</h2>
 <hr />
@@ -665,7 +450,7 @@ is ready for reading, before performing the <code>splice</code>.</p>
 <ul>
 <li><a name="method_output_stream.blocking_splice.0"></a> result&lt;<code>u64</code>, <a href="#stream_error"><a href="#stream_error"><code>stream-error</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi:keyvalue_wasi_keyvalue_error_0.1.0"></a>Import interface wasi:keyvalue/wasi-keyvalue-error@0.1.0</h2>
+<h2><a name="wasi:keyvalue_wasi_keyvalue_error_0.2.0_draft"></a>Import interface wasi:keyvalue/wasi-keyvalue-error@0.2.0-draft</h2>
 <hr />
 <h3>Types</h3>
 <h4><a name="error"></a><code>resource error</code></h4>
@@ -694,7 +479,7 @@ Soon: switch to <code>resource error { ... }</code></h2>
 <ul>
 <li><a name="method_error.trace.0"></a> <code>string</code></li>
 </ul>
-<h2><a name="wasi:keyvalue_types_0.1.0"></a>Import interface wasi:keyvalue/types@0.1.0</h2>
+<h2><a name="wasi:keyvalue_types_0.2.0_draft"></a>Import interface wasi:keyvalue/types@0.2.0-draft</h2>
 <p>A generic keyvalue interface for WASI.</p>
 <hr />
 <h3>Types</h3>
@@ -833,7 +618,7 @@ If the size is unknown or unavailable, this function returns an <code>Err(error)
 <ul>
 <li><a name="method_incoming_value.incoming_value_size.0"></a> result&lt;<code>u64</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h2><a name="wasi:keyvalue_eventual_0.1.0"></a>Import interface wasi:keyvalue/eventual@0.1.0</h2>
+<h2><a name="wasi:keyvalue_eventual_0.2.0_draft"></a>Import interface wasi:keyvalue/eventual@0.2.0-draft</h2>
 <p>A keyvalue interface that provides eventually consistent CRUD operations.</p>
 <p>A CRUD operation is an operation that acts on a single key-value pair.</p>
 <p>The value in the key-value pair is defined as a <code>u8</code> byte array and the intention
@@ -926,7 +711,7 @@ not exist in the bucket, it returns <code>Ok(false)</code>.</p>
 <ul>
 <li><a name="exists.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h2><a name="wasi:keyvalue_atomic_0.1.0"></a>Import interface wasi:keyvalue/atomic@0.1.0</h2>
+<h2><a name="wasi:keyvalue_atomic_0.2.0_draft"></a>Import interface wasi:keyvalue/atomic@0.2.0-draft</h2>
 <p>A keyvalue interface that provides atomic operations.</p>
 <p>Atomic operations are single, indivisible operations. When a fault causes
 an atomic operation to fail, it will appear to the invoker of the atomic
@@ -980,7 +765,7 @@ and was replaced with the <code>new</code> value.</p>
 <ul>
 <li><a name="compare_and_swap.0"></a> result&lt;<code>bool</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h2><a name="wasi:keyvalue_eventual_batch_0.1.0"></a>Import interface wasi:keyvalue/eventual-batch@0.1.0</h2>
+<h2><a name="wasi:keyvalue_eventual_batch_0.2.0_draft"></a>Import interface wasi:keyvalue/eventual-batch@0.2.0-draft</h2>
 <p>A keyvalue interface that provides eventually consistent batch operations.</p>
 <p>A batch operation is an operation that operates on multiple keys at once.</p>
 <p>Batch operations are useful for reducing network round-trip time. For example,
@@ -1087,7 +872,7 @@ deleted while others might fail.</p>
 <ul>
 <li><a name="delete_many.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h2><a name="wasi:blobstore_types_0.1.0"></a>Import interface wasi:blobstore/types@0.1.0</h2>
+<h2><a name="wasi:blobstore_types_0.2.0_draft"></a>Import interface wasi:blobstore/types@0.2.0-draft</h2>
 <p>Types used by blobstore</p>
 <hr />
 <h3>Types</h3>
@@ -1222,7 +1007,7 @@ Soon: switch to <code>resource incoming-value { ... }</code></li>
 <ul>
 <li><a name="method_incoming_value.size.0"></a> <code>u64</code></li>
 </ul>
-<h2><a name="wasi:blobstore_container_0.1.0"></a>Import interface wasi:blobstore/container@0.1.0</h2>
+<h2><a name="wasi:blobstore_container_0.2.0_draft"></a>Import interface wasi:blobstore/container@0.2.0-draft</h2>
 <p>a Container is a collection of objects</p>
 <hr />
 <h3>Types</h3>
@@ -1392,7 +1177,7 @@ does not return error if object did not exist.</p>
 <ul>
 <li><a name="method_stream_object_names.skip_stream_object_names.0"></a> result&lt;(<code>u64</code>, <code>bool</code>), <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi:blobstore_blobstore_0.1.0"></a>Import interface wasi:blobstore/blobstore@0.1.0</h2>
+<h2><a name="wasi:blobstore_blobstore_0.2.0_draft"></a>Import interface wasi:blobstore/blobstore@0.2.0-draft</h2>
 <p>wasi-cloud Blobstore service definition</p>
 <hr />
 <h3>Types</h3>
@@ -1476,7 +1261,181 @@ overwrites destination object if it already existed.</p>
 <ul>
 <li><a name="move_object.0"></a> result&lt;_, <a href="#error"><a href="#error"><code>error</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi:sql_types_0.1.0"></a>Import interface wasi:sql/types@0.1.0</h2>
+<h2><a name="wasi:messaging_messaging_types_0.2.0_draft"></a>Import interface wasi:messaging/messaging-types@0.2.0-draft</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="client"></a><code>resource client</code></h4>
+<p>A connection to a message-exchange service (e.g., buffer, broker, etc.).</p>
+<h4><a name="error"></a><code>resource error</code></h4>
+<p>TODO(danbugs): This should be eventually extracted as an underlying type for other wasi-cloud-core interfaces.</p>
+<h4><a name="channel"></a><code>type channel</code></h4>
+<p><code>string</code></p>
+<p>There are two types of channels:
+- publish-subscribe channel, which is a broadcast channel, and
+- point-to-point channel, which is a unicast channel.
+<p>The interface doesn't highlight this difference in the type itself as that's uniquely a consumer issue.</p>
+<h4><a name="guest_configuration"></a><code>record guest-configuration</code></h4>
+<p>Configuration includes a required list of channels the guest is subscribing to, and an optional list of extensions key-value pairs
+(e.g., partitions/offsets to read from in Kafka/EventHubs, QoS etc.).</p>
+<h5>Record Fields</h5>
+<ul>
+<li><a name="guest_configuration.channels"></a><code>channels</code>: list&lt;<a href="#channel"><a href="#channel"><code>channel</code></a></a>&gt;</li>
+<li><a name="guest_configuration.extensions"></a><code>extensions</code>: option&lt;list&lt;(<code>string</code>, <code>string</code>)&gt;&gt;</li>
+</ul>
+<h4><a name="format_spec"></a><code>enum format-spec</code></h4>
+<p>Format specification for messages</p>
+<ul>
+<li>more info: https://github.com/clemensv/spec/blob/registry-extensions/registry/spec.md#message-formats</li>
+<li>message metadata can further decorate w/ things like format version, and so on.</li>
+</ul>
+<h5>Enum Cases</h5>
+<ul>
+<li><a name="format_spec.cloudevents"></a><code>cloudevents</code></li>
+<li><a name="format_spec.http"></a><code>http</code></li>
+<li><a name="format_spec.amqp"></a><code>amqp</code></li>
+<li><a name="format_spec.mqtt"></a><code>mqtt</code></li>
+<li><a name="format_spec.kafka"></a><code>kafka</code></li>
+<li><a name="format_spec.raw"></a><code>raw</code></li>
+</ul>
+<h4><a name="message"></a><code>record message</code></h4>
+<p>A message with a binary payload, a format specification, and decorative metadata.</p>
+<h5>Record Fields</h5>
+<ul>
+<li><a name="message.data"></a><code>data</code>: list&lt;<code>u8</code>&gt;</li>
+<li><a name="message.format"></a><code>format</code>: <a href="#format_spec"><a href="#format_spec"><code>format-spec</code></a></a></li>
+<li><a name="message.metadata"></a><code>metadata</code>: option&lt;list&lt;(<code>string</code>, <code>string</code>)&gt;&gt;</li>
+</ul>
+<hr />
+<h3>Functions</h3>
+<h4><a name="static_client.connect"></a><code>[static]client.connect: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="static_client.connect.name"></a><code>name</code>: <code>string</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_client.connect.0"></a> result&lt;own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="static_error.trace"></a><code>[static]error.trace: func</code></h4>
+<h5>Return values</h5>
+<ul>
+<li><a name="static_error.trace.0"></a> <code>string</code></li>
+</ul>
+<h2><a name="wasi:messaging_producer_0.2.0_draft"></a>Import interface wasi:messaging/producer@0.2.0-draft</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="client"></a><code>type client</code></h4>
+<p><a href="#client"><a href="#client"><code>client</code></a></a></p>
+<p>
+#### <a name="channel"></a>`type channel`
+[`channel`](#channel)
+<p>
+#### <a name="message"></a>`type message`
+[`message`](#message)
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="send"></a><code>send: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="send.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
+<li><a name="send.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
+<li><a name="send.m"></a><code>m</code>: list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;</li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="send.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:messaging_consumer_0.2.0_draft"></a>Import interface wasi:messaging/consumer@0.2.0-draft</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="client"></a><code>type client</code></h4>
+<p><a href="#client"><a href="#client"><code>client</code></a></a></p>
+<p>
+#### <a name="message"></a>`type message`
+[`message`](#message)
+<p>
+#### <a name="channel"></a>`type channel`
+[`channel`](#channel)
+<p>
+#### <a name="error"></a>`type error`
+[`error`](#error)
+<p>
+#### <a name="guest_configuration"></a>`type guest-configuration`
+[`guest-configuration`](#guest_configuration)
+<p>
+----
+<h3>Functions</h3>
+<h4><a name="subscribe_try_receive"></a><code>subscribe-try-receive: func</code></h4>
+<p>Blocking receive for t-milliseconds with ephemeral subscription – if no message is received, returns None</p>
+<h5>Params</h5>
+<ul>
+<li><a name="subscribe_try_receive.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
+<li><a name="subscribe_try_receive.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
+<li><a name="subscribe_try_receive.t_milliseconds"></a><code>t-milliseconds</code>: <code>u32</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="subscribe_try_receive.0"></a> result&lt;option&lt;list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="subscribe_receive"></a><code>subscribe-receive: func</code></h4>
+<p>Blocking receive until message with ephemeral subscription</p>
+<h5>Params</h5>
+<ul>
+<li><a name="subscribe_receive.c"></a><code>c</code>: own&lt;<a href="#client"><a href="#client"><code>client</code></a></a>&gt;</li>
+<li><a name="subscribe_receive.ch"></a><code>ch</code>: <a href="#channel"><a href="#channel"><code>channel</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="subscribe_receive.0"></a> result&lt;list&lt;<a href="#message"><a href="#message"><code>message</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="update_guest_configuration"></a><code>update-guest-configuration: func</code></h4>
+<p>'Fit-all' type function for updating a guest's configuration – this could be useful for:</p>
+<ul>
+<li>unsubscribing from a channel,</li>
+<li>checkpointing,</li>
+<li>etc..</li>
+</ul>
+<h5>Params</h5>
+<ul>
+<li><a name="update_guest_configuration.gc"></a><code>gc</code>: <a href="#guest_configuration"><a href="#guest_configuration"><code>guest-configuration</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="update_guest_configuration.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="complete_message"></a><code>complete-message: func</code></h4>
+<p>A message can exist under several statuses:
+(1) available: the message is ready to be read,
+(2) acquired: the message has been sent to a consumer (but still exists in the queue),
+(3) accepted (result of complete-message): the message has been received and ACK-ed by a consumer and can be safely removed from the queue,
+(4) rejected (result of abandon-message): the message has been received and NACK-ed by a consumer, at which point it can be:</p>
+<ul>
+<li>deleted,</li>
+<li>sent to a dead-letter queue, or</li>
+<li>kept in the queue for further processing.</li>
+</ul>
+<h5>Params</h5>
+<ul>
+<li><a name="complete_message.m"></a><code>m</code>: <a href="#message"><a href="#message"><code>message</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="complete_message.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h4><a name="abandon_message"></a><code>abandon-message: func</code></h4>
+<h5>Params</h5>
+<ul>
+<li><a name="abandon_message.m"></a><code>m</code>: <a href="#message"><a href="#message"><code>message</code></a></a></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="abandon_message.0"></a> result&lt;_, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:sql_types_0.2.0_draft"></a>Import interface wasi:sql/types@0.2.0-draft</h2>
 <hr />
 <h3>Types</h3>
 <h4><a name="data_type"></a><code>variant data-type</code></h4>
@@ -1542,7 +1501,7 @@ of the error. In the future, this will be extended to provide more information.<
 <ul>
 <li><a name="static_connection.open.0"></a> result&lt;own&lt;<a href="#connection"><a href="#connection"><code>connection</code></a></a>&gt;, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
 </ul>
-<h2><a name="wasi:sql_readwrite_0.1.0"></a>Import interface wasi:sql/readwrite@0.1.0</h2>
+<h2><a name="wasi:sql_readwrite_0.2.0_draft"></a>Import interface wasi:sql/readwrite@0.2.0-draft</h2>
 <hr />
 <h3>Types</h3>
 <h4><a name="statement"></a><code>type statement</code></h4>
@@ -1583,6 +1542,47 @@ indexes).</p>
 <h5>Return values</h5>
 <ul>
 <li><a name="exec.0"></a> result&lt;<code>u32</code>, own&lt;<a href="#error"><a href="#error"><code>error</code></a></a>&gt;&gt;</li>
+</ul>
+<h2><a name="wasi:config_runtime_0.2.0_draft"></a>Import interface wasi:config/runtime@0.2.0-draft</h2>
+<hr />
+<h3>Types</h3>
+<h4><a name="config_error"></a><code>variant config-error</code></h4>
+<p>An error type that encapsulates the different errors that can occur fetching config</p>
+<h5>Variant Cases</h5>
+<ul>
+<li>
+<p><a name="config_error.upstream"></a><code>upstream</code>: <code>string</code></p>
+<p>This indicates an error from an "upstream" config source.
+As this could be almost _anything_ (such as Vault, Kubernetes ConfigMaps, KeyValue buckets, etc),
+the error message is a string.
+</li>
+<li>
+<p><a name="config_error.io"></a><code>io</code>: <code>string</code></p>
+<p>This indicates an error from an I/O operation.
+As this could be almost _anything_ (such as a file read, network connection, etc),
+the error message is a string.
+Depending on how this ends up being consumed,
+we may consider moving this to use the `wasi:io/error` type instead.
+For simplicity right now in supporting multiple implementations, it is being left as a string.
+</li>
+</ul>
+<hr />
+<h3>Functions</h3>
+<h4><a name="get"></a><code>get: func</code></h4>
+<p>Gets a single opaque config value set at the given key if it exists</p>
+<h5>Params</h5>
+<ul>
+<li><a name="get.key"></a><a href="#key"><code>key</code></a>: <code>string</code></li>
+</ul>
+<h5>Return values</h5>
+<ul>
+<li><a name="get.0"></a> result&lt;option&lt;list&lt;<code>u8</code>&gt;&gt;, <a href="#config_error"><a href="#config_error"><code>config-error</code></a></a>&gt;</li>
+</ul>
+<h4><a name="get_all"></a><code>get-all: func</code></h4>
+<p>Gets a list of all set config data</p>
+<h5>Return values</h5>
+<ul>
+<li><a name="get_all.0"></a> result&lt;list&lt;(<code>string</code>, list&lt;<code>u8</code>&gt;)&gt;, <a href="#config_error"><a href="#config_error"><code>config-error</code></a></a>&gt;</li>
 </ul>
 <h2><a name="wasi:random_random_0.2.0"></a>Import interface wasi:random/random@0.2.0</h2>
 <p>WASI Random is a random data API.</p>
@@ -1966,11 +1966,9 @@ http-related errors.</p>
 which have multiple values are represented by multiple entries in this
 list with the same key.</p>
 <p>The tuple is a pair of the field key, represented as a string, and
-Value, represented as a list of bytes. In a valid Fields, all keys
-and values are valid UTF-8 strings. However, values are not always
-well-formed, so they are represented as a raw list of bytes.</p>
-<p>An error result will be returned if any header or value was
-syntactically invalid, or if a header was forbidden.</p>
+Value, represented as a list of bytes.</p>
+<p>An error result will be returned if any <a href="#field_key"><code>field-key</code></a> or <a href="#field_value"><code>field-value</code></a> is
+syntactically invalid, or if a field is forbidden.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="static_fields.from_list.entries"></a><code>entries</code>: list&lt;(<a href="#field_key"><a href="#field_key"><code>field-key</code></a></a>, <a href="#field_value"><a href="#field_value"><code>field-value</code></a></a>)&gt;</li>
@@ -1981,9 +1979,9 @@ syntactically invalid, or if a header was forbidden.</p>
 </ul>
 <h4><a name="method_fields.get"></a><code>[method]fields.get: func</code></h4>
 <p>Get all of the values corresponding to a key. If the key is not present
-in this <a href="#fields"><code>fields</code></a>, an empty list is returned. However, if the key is
-present but empty, this is represented by a list with one or more
-empty field-values present.</p>
+in this <a href="#fields"><code>fields</code></a> or is syntactically invalid, an empty list is returned.
+However, if the key is present but empty, this is represented by a list
+with one or more empty field-values present.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="method_fields.get.self"></a><code>self</code>: borrow&lt;<a href="#fields"><a href="#fields"><code>fields</code></a></a>&gt;</li>
@@ -2009,6 +2007,8 @@ syntactically invalid, <code>false</code> is returned.</p>
 <p>Set all of the values for a key. Clears any existing values for that
 key, if they have been set.</p>
 <p>Fails with <code>header-error.immutable</code> if the <a href="#fields"><code>fields</code></a> are immutable.</p>
+<p>Fails with <code>header-error.invalid-syntax</code> if the <a href="#field_key"><code>field-key</code></a> or any of
+the <a href="#field_value"><code>field-value</code></a>s are syntactically invalid.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="method_fields.set.self"></a><code>self</code>: borrow&lt;<a href="#fields"><a href="#fields"><code>fields</code></a></a>&gt;</li>
@@ -2023,6 +2023,8 @@ key, if they have been set.</p>
 <p>Delete all values for a key. Does nothing if no values for the key
 exist.</p>
 <p>Fails with <code>header-error.immutable</code> if the <a href="#fields"><code>fields</code></a> are immutable.</p>
+<p>Fails with <code>header-error.invalid-syntax</code> if the <a href="#field_key"><code>field-key</code></a> is
+syntactically invalid.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="method_fields.delete.self"></a><code>self</code>: borrow&lt;<a href="#fields"><a href="#fields"><code>fields</code></a></a>&gt;</li>
@@ -2036,6 +2038,8 @@ exist.</p>
 <p>Append a value for a key. Does not change or delete any existing
 values for that key.</p>
 <p>Fails with <code>header-error.immutable</code> if the <a href="#fields"><code>fields</code></a> are immutable.</p>
+<p>Fails with <code>header-error.invalid-syntax</code> if the <a href="#field_key"><code>field-key</code></a> or
+<a href="#field_value"><code>field-value</code></a> are syntactically invalid.</p>
 <h5>Params</h5>
 <ul>
 <li><a name="method_fields.append.self"></a><code>self</code>: borrow&lt;<a href="#fields"><a href="#fields"><code>fields</code></a></a>&gt;</li>
@@ -2707,7 +2711,7 @@ with an error on its behalf.</p>
 <li><a name="handle.request"></a><code>request</code>: own&lt;<a href="#incoming_request"><a href="#incoming_request"><code>incoming-request</code></a></a>&gt;</li>
 <li><a name="handle.response_out"></a><code>response-out</code>: own&lt;<a href="#response_outparam"><a href="#response_outparam"><code>response-outparam</code></a></a>&gt;</li>
 </ul>
-<h2><a name="wasi:messaging_messaging_guest_0.1.0"></a>Export interface wasi:messaging/messaging-guest@0.1.0</h2>
+<h2><a name="wasi:messaging_messaging_guest_0.2.0_draft"></a>Export interface wasi:messaging/messaging-guest@0.2.0-draft</h2>
 <hr />
 <h3>Types</h3>
 <h4><a name="message"></a><code>type message</code></h4>
