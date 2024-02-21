@@ -1,8 +1,11 @@
-package wasi:messaging@0.1.0;
+package wasi:messaging@0.2.0-draft;
 
-world messaging {
+world imports {
 	import producer;
 	import consumer;
+}
 
+world messaging {
+	include imports;
 	export messaging-guest;
 }
