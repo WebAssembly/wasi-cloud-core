@@ -31,7 +31,6 @@ A proposed [WebAssembly System Interface](https://github.com/WebAssembly/WASI) A
 - [wasi-messaging](https://github.com/WebAssembly/wasi-messaging)
 - [wasi-http](https://github.com/WebAssembly/wasi-http)
 - [wasi-runtime-config](https://github.com/WebAssembly/wasi-runtime-config)
-- [wasi-sql](https://github.com/WebAssembly/wasi-sql)
 - [wasi-blob-store](https://github.com/WebAssembly/wasi-blob-store)
 
 This list of services provide a set of capabilities that are common to many applications. Examples: handling an HTTP request, responding to a pub/sub message, storing a key/value pair, etc. It targets a wide range of applications, from long-running services to "bursty workloads" like Edge functions, serverless functions or Cloud events.
