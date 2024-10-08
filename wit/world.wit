@@ -1,11 +1,11 @@
-package wasi:cloud-core@0.2.0-draft;
+package wasi:cloud-core@0.2.0-draft2;
 
 /// The `import` world imports every API that `wasi-cloud-core`
 /// expects. It is intended to be `include`d into worlds that
 /// export interfaces.
 world imports {
     /// The capability to interact with key-value stores
-    include wasi:keyvalue/imports@0.2.0-draft;
+    include wasi:keyvalue/imports@0.2.0-draft2;
 
     /// The capability to interact with blob stores
     include wasi:blobstore/imports@0.2.0-draft;
@@ -13,14 +13,11 @@ world imports {
     /// The capability to send and receive messages to message broker proiders
     include wasi:messaging/imports@0.2.0-draft;
 
-    /// The capability to interact with SQL databases
-    include wasi:sql/imports@0.2.0-draft;
-
     /// The capability to interact with runtime configuration providers
     include wasi:config/imports@0.2.0-draft;
 
     /// The capability to send HTTP requests (e.g. via `fetch()`)
-    include wasi:http/imports@0.2.0;
+    include wasi:http/imports@0.2.1;
 }
 
 /// The `http-service` world is a world that exports a single HTTP
@@ -31,7 +28,7 @@ world http-service {
     include imports;
 
     /// The capability to send/receive HTTP requests
-    include wasi:http/proxy@0.2.0;
+    include wasi:http/proxy@0.2.1;
 }
 
 /// The `messaging-service` world is a world that exports a single
